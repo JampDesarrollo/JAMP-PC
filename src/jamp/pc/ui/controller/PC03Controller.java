@@ -7,7 +7,7 @@ package jamp.pc.ui.controller;
 
 /**
  *
- * @author Julen
+ * @author Paula
  */
 public class PC03Controller {
     
