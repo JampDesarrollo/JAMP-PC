@@ -7,7 +7,7 @@ package jamp.pc.logic;
 
 /**
  *
- * @author Julen
+ * @author Paula
  */
 public interface ILogic {
     
