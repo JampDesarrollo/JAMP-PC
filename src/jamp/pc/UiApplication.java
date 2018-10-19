@@ -1,4 +1,6 @@
 
+package jamp.pc;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
