@@ -7,7 +7,10 @@ package jamp.pc.ui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 
 /**
  * FXML Controller class
@@ -15,6 +18,17 @@ import javafx.fxml.Initializable;
  * @author 2dam
  */
 public class PC03PrincipalController implements Initializable {
+
+    @FXML
+    private MenuItem btnLogOut;
+    @FXML
+    private Label lblDate;
+    @FXML
+    private Label lblLogin;
+    @FXML
+    private Label lblFullName;
+    @FXML
+    private Label lblEmail;
 
     /**
      * Initializes the controller class.
