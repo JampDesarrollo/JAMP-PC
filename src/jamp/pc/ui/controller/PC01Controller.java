@@ -7,8 +7,8 @@ package jamp.pc.ui.controller;
 
 /**
  *
- * @author Ander
+ * @author Paula
  */
 public class PC01Controller {
-    
+    private String paula;
 }
