@@ -7,8 +7,8 @@ package jamp.pc.ui.controller;
 
 /**
  *
- * @author Julen
+ * @author Paula
  */
-public class PC02Controller {
-    private int and;
+public class PC01LoginController {
+    
 }

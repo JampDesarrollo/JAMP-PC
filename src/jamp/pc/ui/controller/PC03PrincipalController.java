@@ -7,8 +7,8 @@ package jamp.pc.ui.controller;
 
 /**
  *
- * @author Ander
+ * @author Julen
  */
-public class PC01Controller {
+public class PC03PrincipalController {
     
 }
