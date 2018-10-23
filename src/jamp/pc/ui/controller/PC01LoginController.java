@@ -5,6 +5,12 @@
  */
 package jamp.pc.ui.controller;
 
+/**
+ *
+ * @author Paula
+ */
+public class PC01LoginController {
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -52,5 +58,5 @@ public class PC01LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
+  
 }

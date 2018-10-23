@@ -5,6 +5,14 @@
  */
 package jamp.pc.ui.controller;
 
+
+/**
+ *
+ * @author Julen
+ */
+public class PC03PrincipalController {
+    
+
 import jamp.pc.logic.ILogic;
 import java.awt.event.ActionEvent;
 
@@ -133,5 +141,6 @@ public class PC03PrincipalController implements Initializable {
         //hides login stage
         stage.hide();
     }
+
 
 }
