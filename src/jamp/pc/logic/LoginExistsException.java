@@ -9,6 +9,12 @@ package jamp.pc.logic;
  *
  * @author Julen
  */
-public class LoginExistsException {
+public class LoginExistsException extends Exception{
+    
+     public LoginExistsException(String msg){
+    
+        super(msg);
+        
+    }
     
 }

@@ -5,15 +5,18 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.*;
+
 /**
  *
- * @author Julen
+ * @author paula
  */
-public class ILogicFactory {
+public class UserNotExistException extends Exception {
     
-    public static ILogic getILogic(){
+    public UserNotExistException(String msg){
     
-    return new ILogicImplementation();
+        super(msg);
+        
     }
     
 }

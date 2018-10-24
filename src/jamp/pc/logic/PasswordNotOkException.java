@@ -5,15 +5,18 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.*;
+
 /**
  *
- * @author Julen
+ * @author paula
  */
-public class ILogicFactory {
+public class PasswordNotOkException extends Exception{
     
-    public static ILogic getILogic(){
+    public PasswordNotOkException(String msg){
     
-    return new ILogicImplementation();
+        super(msg);
+        
     }
     
 }
