@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.view.PC01LoginController">
+<VBox alignment="CENTER" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.controller.PC01LoginController">
    <children>
       <Label fx:id="lblJAMP" alignment="CENTER" text="JAMP" textFill="#005192">
          <font>
