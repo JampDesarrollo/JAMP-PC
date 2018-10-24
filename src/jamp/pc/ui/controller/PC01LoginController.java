@@ -9,7 +9,6 @@ package jamp.pc.ui.controller;
  *
  * @author Paula
  */
-public class PC01LoginController {
 
 import java.net.URL;
 import java.util.ResourceBundle;
