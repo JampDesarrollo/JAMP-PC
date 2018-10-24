@@ -10,7 +10,6 @@ package jamp.pc.ui.controller;
  *
  * @author Julen
  */
-public class PC03PrincipalController {
     
 
 import jamp.pc.logic.ILogic;
@@ -124,11 +123,12 @@ public class PC03PrincipalController implements Initializable {
     } 
 
 
-    private javafx.event.EventHandler<javafx.event.ActionEvent> logOutAction(WindowEvent event) throws IOException {
+    private javafx.event.EventHandler<javafx.event.ActionEvent> 
+        logOutAction(WindowEvent event) throws IOException {
         //Shows view from GestionUsuarios.fxml
         //Load node graph from fxml file
         FXMLLoader loader=
-                new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/Login.fxml"));
+          new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/Login.fxml"));
        
         Parent root = (Parent)loader.load();
         //Get controller for graph 
@@ -140,6 +140,12 @@ public class PC03PrincipalController implements Initializable {
         controller.initStage(root);
         //hides login stage
         stage.hide();
+        return null;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

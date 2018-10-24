@@ -5,10 +5,21 @@
  */
 package jamp.pc.logic;
 
+import javax.naming.OperationNotSupportedException;
+
 /**
  *
  * @author Julen
  */
 public class ILogicFactory {
     
+    public static ILogic createILogic(String type) 
+            throws OperationNotSupportedException{
+        
+        ILogic iLogic  = null;
+        
+        return iLogic;
+    }
+    
 }
+
