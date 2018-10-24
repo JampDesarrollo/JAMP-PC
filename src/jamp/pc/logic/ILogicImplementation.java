@@ -9,6 +9,6 @@ package jamp.pc.logic;
  *
  * @author Julen
  */
-public class ILogicImplementation {
+public class ILogicImplementation implements ILogic {
     
 }

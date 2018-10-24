@@ -5,7 +5,6 @@
  */
 package jamp.pc.ui.controller;
 
-
 /**
  *
  * @author Julen
