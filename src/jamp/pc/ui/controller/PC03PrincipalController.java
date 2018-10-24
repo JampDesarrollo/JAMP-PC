@@ -12,9 +12,6 @@ package jamp.pc.ui.controller;
     
 
 import jamp.pc.logic.ILogic;
-import java.awt.event.ActionEvent;
-
-import java.beans.EventHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -134,7 +131,7 @@ public class PC03PrincipalController implements Initializable {
         PC01LoginController controller=
                 ((PC01LoginController)loader.getController());
         
-        controller.setUsersManager(iLogic);
+        controller.setILogic(iLogic);
         //Initializes stage
         controller.initStage(root);
         //hides login stage
