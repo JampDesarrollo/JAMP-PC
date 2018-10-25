@@ -353,7 +353,7 @@ public class PC01LoginController implements Initializable {
    
      
       
-      tfContraseña.setText(pfContraseña.getText());
+    tfContraseña.setText(pfContraseña.getText());
     tfContraseña.setVisible(true);
     pfContraseña.setVisible(false);
     

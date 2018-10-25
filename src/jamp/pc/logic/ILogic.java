@@ -5,10 +5,15 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.UserBean;
+
 /**
  *
  * @author Paula
  */
 public interface ILogic {
+    
+ //   public void isLoginExisting(UserBean usuario);
+    
     
 }
