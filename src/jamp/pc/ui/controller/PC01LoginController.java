@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -43,7 +44,8 @@ public class PC01LoginController implements Initializable {
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private ILogic ilogic;
-    private static final int MAX_CARACT = 255;
+    private static final int MAX_CARACT = 5;
+
 
     @FXML
     private Label lblJAMP;
@@ -130,6 +132,8 @@ public class PC01LoginController implements Initializable {
         btnOjo.setDisable(false);
         hpLink.setDisable(false);
 
+         btnInicio.requestFocus();
+
         imLoading.setVisible(false);
 
         //el label de informacion estará invisible
@@ -147,16 +151,17 @@ public class PC01LoginController implements Initializable {
 
                 try {
 
-                    imLoading.setVisible(true);
+
+                    
                     //instancio el xml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
-                    LOGGER.info("haa");
+
                     //lo cargo en el root que es de tipo parent
                     Parent root = (Parent) loader.load();
-                    LOGGER.info("paula");
+
                     //tengo que crear un nuevo escenario
                     stage = new Stage();
-                    LOGGER.info("holaaaaa");
+
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
                     //le mando el objeto logica 
@@ -166,9 +171,11 @@ public class PC01LoginController implements Initializable {
                     controller.setStage(stage);
                     //inizializo el stage
 
+                    
+                    imLoading.setVisible(false);
+
                     controller.initStage(root);
-                    //cierro la ventana de ahora
-                    stage.hide();
+
 
                 } catch (IOException ex) {
                     LOGGER.info("Error accediendo a la ventana");
@@ -179,7 +186,6 @@ public class PC01LoginController implements Initializable {
         btnOjo.setOnAction((ActionEvent ev) -> {
             showPassword();
         });
-        
     }
 
     //hiperlink registrar
@@ -195,59 +201,89 @@ public class PC01LoginController implements Initializable {
 
         //si los campos estan rellenos  y con menos o igual de caracteres que 255
         if (filled) {
+            //si estan todos los campos comentados, comprobamos los caracteres maximos 
+            boolean maxCar = maxCharacters();
+            //si los caracteres son menos
+            if (maxCar) {
+                //comprobamos que existen el usuario y la contraseña
+                boolean correct = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
 
-            //comprobamos que existen el usuario y la contraseña
-            boolean correct = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
 
-            if (correct) {
-                showPassword();
-               
-                //si esta todo correcto que vaya a la ventana principal
-                try {
-                    imLoading.setVisible(true);
-                    //instancio el xml
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
-                    LOGGER.info("haa");
-                    //lo cargo en el root que es de tipo parent
-                    Parent root = (Parent) loader.load();
-                    LOGGER.info("paulas");
-                    //tengo que crear un nuevo escenario
-                    stage = new Stage();
-                    LOGGER.info("holaaaaa");
-                    //obtener el controlador
-                    PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
-                    //le mando el objeto logica 
-                    // controller.setIlogic(ilogic);
-                    //a ese controlador le paso el stage
-                    LOGGER.info("muy bien");
-                    controller.setStage(stage);
-                    //inizializo el stage
-                    LOGGER.info("perfect");
-                    controller.initStage(root);
-                    //cierro la ventana de ahora
+                if (correct) {
 
-                    stage.hide();
+                    //si esta todo correcto que vaya a la ventana principal
+                    try {
+                        imLoading.setVisible(true);
+                        //instancio el xml
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
 
-                } catch (IOException ex) {
-                    //mensaje de "no se ha podido cargar la ventana"
-                    LOGGER.info("Error accediendo a la ventana");
+                        //lo cargo en el root que es de tipo parent
+                        Parent root = (Parent) loader.load();
+
+                        //tengo que crear un nuevo escenario
+                        stage = new Stage();
+
+                        //obtener el controlador
+                        PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
+                        //le mando el objeto logica 
+                        // controller.setIlogic(ilogic);
+                        //a ese controlador le paso el stage
+
+                        controller.setStage(stage);
+                        //inizializo el stage
+
+                        controller.initStage(root);
+
+
+                    } catch (IOException ex) {
+                        //mensaje de "no se ha podido cargar la ventana"
+                        LOGGER.info("Error accediendo a la ventana");
+
+                    }
+
+                } else {
+
+                    //se pone el foco en los campos de la contraseña y usuario
+                    btnInicio.requestFocus();
+                    //que este en rojo
+                    tfUsuario.setStyle("-fx-border-color: red;");
+                    pfContraseña.setStyle("-fx-border-color: red;");
+                    //que el texto sea visible 
+                    lblError.setText("Usuario o contraseña inccorrecta");
+                    lblError.setVisible(true);
+                    lblError.setStyle("-fx-text-inner-color: red;");
+
+                }
+            } else { //si los caracteres son mayores a los definidos
+
+
+                if (tfUsuario.getText().trim().length() > MAX_CARACT && pfContraseña.getText().trim().length() > MAX_CARACT) {
+
+                    btnInicio.requestFocus();
+                    tfUsuario.setStyle("-fx-border-color: red;");
+                    pfContraseña.setStyle("-fx-border-color: red;");
+                    lblError.setText("Demasiados caracteres");
+                    lblError.setVisible(true);
+                    lblError.setStyle("-fx-text-inner-color: red;");
+
+                } else if (tfUsuario.getText().trim().length() > MAX_CARACT) {
+
+                    btnInicio.requestFocus();
+                    tfUsuario.setStyle("-fx-border-color: red;");
+                    lblError.setText("Demasiados caracteres");
+                    lblError.setVisible(true);
+                    lblError.setStyle("-fx-text-inner-color: red;");
+                } else {
+
+                    btnInicio.requestFocus();
+                    pfContraseña.setStyle("-fx-border-color: red;");
+                    lblError.setText("Demasiados caracteres");
+                    lblError.setVisible(true);
+                    lblError.setStyle("-fx-text-inner-color: red;");
 
                 }
 
-            } else {
-
-                //se pone el foco en los campos de la contraseña y usuario
-                btnInicio.requestFocus();
-                //que este en rojo
-                tfUsuario.setStyle("-fx-border-color: red;");
-                pfContraseña.setStyle("-fx-border-color: red;");
-                //que el texto sea visible 
-                lblError.setText("Usuario o contraseña inccorrecta");
-                lblError.setVisible(true);
-                lblError.setStyle("-fx-text-inner-color: red;");
-
             }
-
         } else {
 
             //se va a enfocar los campos y se le va a cambiar el texto del label
@@ -296,8 +332,6 @@ public class PC01LoginController implements Initializable {
             //si son diferentes a vacio, devuelve true, eso quiere decir que hay algo escrito
             
             isFilled = true;
-            showPassword();
-          
         } else {
             isFilled = false;
         }
@@ -318,9 +352,10 @@ public class PC01LoginController implements Initializable {
         boolean notError = false;
 
         try {
-            showPassword();
-           
+
+
             //  ilogic = ILogicFactory.getILogic();
+            //tengo que coger el metodo userLogin();
 
 //user bean 
 //las excepciones en logica 
@@ -329,10 +364,13 @@ public class PC01LoginController implements Initializable {
             String nombre = "paula";
 
 //declarar un atributo de la clase de test 
-            LOGGER.info("paula");
 
             // comprobar que esta correcto, vamos que en la bda existe 
             notError = true;
+            lblError.setVisible(false);
+            tfUsuario.setStyle("-fx-border-color: black;");
+            pfContraseña.setStyle("-fx-border-color: black;");
+            
         } /*catch (UserNotExistException e) {
             notError = false;
 
@@ -349,18 +387,52 @@ public class PC01LoginController implements Initializable {
     }
 
     private void showPassword() {
-      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-   
-     
-      
-      tfContraseña.setText(pfContraseña.getText());
+
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        /*
+    tfContraseña.setText(pfContraseña.getText());
+
     tfContraseña.setVisible(true);
     pfContraseña.setVisible(false);
     
     
-    
 
-    
+         */
+        if (pfContraseña.isVisible()) {
+            //Change Passw textfield to visible
+            tfContraseña.setText(pfContraseña.getText());
+            pfContraseña.setVisible(false);
+            tfContraseña.setVisible(true);
+            //Change Rpassw textfield to visible
+            tfContraseña.setText(pfContraseña.getText());
+            pfContraseña.setVisible(false);
+            tfContraseña.setVisible(true);
+        } else {
+            //Change Passw passwordfield to visible
+            pfContraseña.setText(tfContraseña.getText());
+            tfContraseña.setVisible(false);
+            pfContraseña.setVisible(true);
+            //Change Rpassw passwordfield to visible
+            pfContraseña.setText(tfContraseña.getText());
+            tfContraseña.setVisible(false);
+            pfContraseña.setVisible(true);
+        }
+
+    }
+
+    private boolean maxCharacters() {
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean maxcaracteres = false;
+        if (tfUsuario.getText().trim().length() < MAX_CARACT && pfContraseña.getText().trim().length() < MAX_CARACT) {
+            maxcaracteres = true;
+        } else {
+            maxcaracteres = false;
+        }
+
+        return maxcaracteres;
+    }
+
 
 }
 }
