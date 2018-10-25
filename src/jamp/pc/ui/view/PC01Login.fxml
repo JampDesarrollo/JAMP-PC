@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.controller.PC01LoginController">
+<VBox alignment="CENTER" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.controller.PC01LoginController">
    <children>
       <Label fx:id="lblJAMP" alignment="CENTER" text="JAMP" textFill="#005192">
          <font>
@@ -33,8 +33,14 @@
          <children>
             <StackPane prefHeight="50.0" prefWidth="222.0">
                <children>
-                  <TextField fx:id="tfContraseña" alignment="CENTER" prefWidth="222.0" />
-                  <PasswordField fx:id="pfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Contraseña" />
+                  <TextField fx:id="tfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0">
+                     <font>
+                        <Font name="Alef Regular" size="12.0" />
+                     </font></TextField>
+                  <PasswordField fx:id="pfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Contraseña">
+                     <font>
+                        <Font name="Alef Regular" size="12.0" />
+                     </font></PasswordField>
                </children>
             </StackPane>
             <Button fx:id="btnOjo" mnemonicParsing="false" prefHeight="26.0" prefWidth="19.0">
