@@ -5,8 +5,7 @@
  */
 package jamp.pc.ui.controller;
 
-import java.util.Date;
-
+import java.sql.Timestamp;
 /**
  *
  * @author 2dam
@@ -18,8 +17,20 @@ public class UserBean {
     private String email;
     private String fullname;
     private String password;
-    private Date lastAccess;
-    private Date lastPasswordChange;
+    private enum status{DISABLED, ENABLED};
+    private enum privilege{USER, ADMIN};
+    private Timestamp lastAccess;
+    private Timestamp lastPasswordChange;
+    
+    UserBean(String login, String email, String fullName, String passw, 
+            Timestamp lastAccess, Timestamp lasPasswChange) {
+        this.login = login;
+        this.email = email;
+        this.fullname = fullName;
+        this.password = passw;
+        this.lastAccess = lastAccess;
+        this.lastPasswordChange = lastPasswordChange;        
+    }
 
     public int getId() {
         return id;
@@ -61,19 +72,19 @@ public class UserBean {
         this.password = password;
     }
 
-    public Date getLastAccess() {
+    public Timestamp getLastAccess() {
         return lastAccess;
     }
 
-    public void setLastAccess(Date lastAccess) {
+    public void setLastAccess(Timestamp lastAccess) {
         this.lastAccess = lastAccess;
     }
 
-    public Date getLastPasswordChange() {
+    public Timestamp getLastPasswordChange() {
         return lastPasswordChange;
     }
 
-    public void setLastPasswordChange(Date lastPasswordChange) {
+    public void setLastPasswordChange(Timestamp lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
     

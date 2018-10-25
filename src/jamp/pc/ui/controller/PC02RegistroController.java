@@ -5,8 +5,10 @@
  */
 package jamp.pc.ui.controller;
 
+import jamp.pc.logic.ILogic;
 import jamp.pc.logic.UserLoginExistException;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -57,7 +59,7 @@ public class PC02RegistroController {
     /**
      * Show written password button
      */
-
+    
     @FXML
     private PasswordField pfPassw;
     /**
@@ -68,14 +70,34 @@ public class PC02RegistroController {
     /**
      * Show written password button
      */
-
+    
     @FXML
     private Button btnEye;
     /**
-     * Label to write the errors
+     *
      */
     @FXML
-    private Label lblWrong;
+    private Label lblLoginW;
+    /**
+     *
+     */
+    @FXML
+    private Label lblFNameW;
+    /**
+     *
+     */
+    @FXML
+    private Label lblEmailW;
+    /**
+     *
+     */
+    @FXML
+    private Label lblPasswW;
+    /**
+     *
+     */
+    @FXML
+    private Label lblRpasswW;
     /**
      * Go back to Login view button
      */
@@ -91,6 +113,13 @@ public class PC02RegistroController {
      */
     @FXML
     private ImageView imgLoading;
+    
+    private ILogic iLogic;
+    
+    public void setILogic(ILogic iLogic) {
+        this.iLogic = iLogic;
+    }
+
     /**
      * Stage in which the scene will be loaded
      */
@@ -98,11 +127,12 @@ public class PC02RegistroController {
 
     /**
      *
+     * @param stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    
     private static final Logger LOGGER
             = Logger.getLogger("jamp.pc.ui.controller");
     /**
@@ -132,6 +162,7 @@ public class PC02RegistroController {
             btnSignUp.setOnAction((ActionEvent event) -> {
                 regis();
             });
+            stage.show();
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
@@ -148,7 +179,11 @@ public class PC02RegistroController {
         btnBack.setDisable(false);
         btnEye.setDisable(false);
         btnSignUp.setDisable(false);
-        lblWrong.setVisible(false);
+        lblLoginW.setVisible(false);
+        lblFNameW.setVisible(false);
+        lblEmailW.setVisible(false);
+        lblPasswW.setVisible(false);
+        lblRpasswW.setVisible(false);
         imgLoading.setVisible(false);
         tfPassw.setVisible(false);
         tfRpassw.setVisible(false);
@@ -161,7 +196,7 @@ public class PC02RegistroController {
     private void back() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/jamp/pc/ui/view/PC01LoginController.fxml"));
+                    getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));
             Parent root = (Parent) loader.load();
             stage = new Stage();
             PC01LoginController loginStageController
@@ -173,7 +208,7 @@ public class PC02RegistroController {
             LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
         }
-
+        
     }
 
     /**
@@ -210,19 +245,29 @@ public class PC02RegistroController {
         boolean passwMatch = chkPasswMatch();
         boolean passwLen = chkPasswLength();
         try {
-            if(filled && fieldsLength && passwMatch && passwLen){
+            if (filled && fieldsLength && passwMatch && passwLen) {
+                imgLoading.setVisible(true);
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                UserBean user = new UserBean(tfLogin.getText().trim(),
+                        tfEmail.getText(), tfFullName.getText(),
+                        pfPassw.getText(), now, now);
+                //Recibo la Ilogic que me pasa Paula
+                //iLogic.userSignUp(user);
                 
             }
         } catch (UserLoginExistException e) {
-            lblWrong.setText("Ese nombre de usuario existe");
-            lblWrong.setStyle("-fx-text-inner-color: red;");
+            lblLoginW.setText("Ese nombre de usuario existe");
+            lblLoginW.setStyle("-fx-text-inner-color: red;");
+            tfLogin.setStyle("-fx-border-color:red;");
+            tfLogin.setText("");
             LOGGER.severe("El login de usuario ya existe.");
         }
-
+        
     }
 
     /**
-     *  Method that check if all fields are filled
+     * Method that check if all fields are filled
+     *
      * @return filled Boolean
      */
     private boolean chkAllFieldsFilled() {
@@ -232,52 +277,72 @@ public class PC02RegistroController {
                 || tfLogin.getText().trim().isEmpty()
                 || tfFullName.getText().trim().isEmpty()) {
             filled = false;
-            lblWrong.setText("Todos los campos tienen que estar rellenos");
-            lblWrong.setStyle("-fx-text-inner-color: red;");
-            lblWrong.setVisible(true);
-        }
-        //Set  textfield and passwordfiels border colors to red if not filled
-        if (tfEmail.getText().trim().isEmpty()) {
-            tfEmail.setStyle("-fx-border-color:red;");
-        }
 
-        if (tfLogin.getText().trim().isEmpty()) {
-            tfLogin.setStyle("-fx-border-color: red;");
-        }
+            //Set  textfield and passwordfiels border colors to red
+            //and show labels if not filled
+            if (tfEmail.getText().trim().isEmpty()) {
+                tfEmail.setStyle("-fx-border-color:red;");
+                lblEmailW.setText("*Campo obligatorio");
+                lblEmailW.setStyle("-fx-text-inner-color: red;");
+                lblEmailW.setVisible(true);
+            }
+            
+            if (tfLogin.getText().trim().isEmpty()) {
+                tfLogin.setStyle("-fx-border-color: red;");
+                lblLoginW.setText("*Campo obligatorio");
+                lblLoginW.setStyle("-fx-text-inner-color: red;");
+                lblLoginW.setVisible(true);
+            }
+            
+            if (tfFullName.getText().trim().isEmpty()) {
+                tfFullName.setStyle("-fx-border-color: red;");
+                lblFNameW.setText("*Campo obligatorio");
+                lblFNameW.setStyle("-fx-text-inner-color: red;");
+                lblFNameW.setVisible(true);
+            }
+            
+            if (pfPassw.getText().trim().isEmpty()) {
+                pfPassw.setStyle("-fx-border-color: red;");
+                lblPasswW.setText("*Campo obligatorio");
+                lblPasswW.setStyle("-fx-text-inner-color: red;");
+                lblPasswW.setVisible(true);
+            }
 
-        if (tfFullName.getText().trim().isEmpty()) {
-            tfFullName.setStyle("-fx-border-color: red;");
-        }
-
-        if (pfPassw.getText().trim().isEmpty()) {
-            pfPassw.setStyle("-fx-border-color: red;");
-        }
-
-        //Set textfields border colors to default if they're filled
-        if (!tfEmail.getText().trim().isEmpty()) {
-            tfEmail.setStyle("-fx-border-color: default;");
-        }
-
-        if (!tfLogin.getText().trim().isEmpty()) {
-            tfLogin.setStyle("-fx-border-color: default;");
-        }
-
-        if (!tfFullName.getText().trim().isEmpty()) {
-            tfFullName.setStyle("-fx-border-color: default;");
+            //Set textfields and passwordfield border colors to default and 
+            //hide labels if they're filled
+            if (!tfEmail.getText().trim().isEmpty()) {
+                tfEmail.setStyle("-fx-border-color: default;");
+                lblEmailW.setText("");
+                lblEmailW.setVisible(false);
+            }
+            
+            if (!tfLogin.getText().trim().isEmpty()) {
+                tfLogin.setStyle("-fx-border-color: default;");
+                lblLoginW.setText("");
+                lblLoginW.setVisible(false);
+            }
+            
+            if (!tfFullName.getText().trim().isEmpty()) {
+                tfFullName.setStyle("-fx-border-color: default;");
+                lblFNameW.setText("");
+                lblFNameW.setVisible(false);
+            }
+            
+            if (pfPassw.getText().trim().isEmpty()) {
+                pfPassw.setStyle("-fx-border-color: default;");
+                lblPasswW.setText("");
+                lblPasswW.setVisible(false);
+            }
         }
         
-        if (pfPassw.getText().trim().isEmpty()) {
-            pfPassw.setStyle("-fx-border-color: default;");
-        }
-
         return filled;
     }
-    
+
     /**
      * Method that checks fields length
-     * @return fieldsLength Boolean  
+     *
+     * @return fieldsLength Boolean
      */
-
     private boolean chkFieldsLength() {
         boolean fieldsLength = true;
         if (pfPassw.getText().trim().length() > MAX_LENGTH
@@ -285,89 +350,112 @@ public class PC02RegistroController {
                 || tfLogin.getText().trim().length() > MAX_LENGTH
                 || tfFullName.getText().trim().length() > MAX_LENGTH) {
             fieldsLength = false;
-            lblWrong.setText(lblWrong.getText()
-                    + " La longitud máxima de los campos es de 255 caracteres.");
-            lblWrong.setStyle("-fx-text-inner-color: red;");
-            lblWrong.setVisible(true);
-        }
-        //Set textfields and passwordfiels border colors to red
-        if (pfPassw.getText().trim().length() > MAX_LENGTH) {
-            pfPassw.setText("");
-            pfPassw.setStyle("-fx-border-color: red;");            
-        }
 
-        if (tfEmail.getText().trim().length() > MAX_LENGTH) {
-            tfEmail.setStyle("-fx-border-color: red;");
-        }
+            //Set textfields and passwordfiels border colors to red and show 
+            // tip labels
+            if (pfPassw.getText().trim().length() > MAX_LENGTH) {
+                pfPassw.setText("");
+                pfPassw.setStyle("-fx-border-color: red;");
+                lblPasswW.setText("Longitud máxima de 255 caracteres");
+                lblPasswW.setStyle("-fx-text-inner-color: red;");
+                lblPasswW.setVisible(true);
+            }
+            
+            if (tfEmail.getText().trim().length() > MAX_LENGTH) {
+                tfEmail.setStyle("-fx-border-color: red;");
+                lblEmailW.setText("Longitud máxima de 255 caracteres");
+                lblEmailW.setStyle("-fx-text-inner-color: red;");
+                lblEmailW.setVisible(true);
+            }
+            
+            if (tfLogin.getText().trim().length() > MAX_LENGTH) {
+                tfLogin.setStyle("-fx-border-color: red;");
+                lblLoginW.setText("Longitud máxima de 255 caracteres");
+                lblLoginW.setStyle("-fx-text-inner-color: red;");
+                lblLoginW.setVisible(true);
+            }
+            
+            if (tfFullName.getText().trim().length() > MAX_LENGTH) {
+                tfFullName.setStyle("-fx-border-color: red;");
+                lblFNameW.setText("Longitud máxima de 255 caracteres");
+                lblFNameW.setStyle("-fx-text-inner-color: red;");
+                lblFNameW.setVisible(true);
+            }
 
-        if (tfLogin.getText().trim().length() > MAX_LENGTH) {
-            tfLogin.setStyle("-fx-border-color: red;");
-        }
-
-        if (tfFullName.getText().trim().length() > MAX_LENGTH) {
-            tfFullName.setStyle("-fx-border-color: red;");
+            //Set textfields and passwordfiels border colors to default
+            //and hides tip label
+            if (pfPassw.getText().trim().length() < MAX_LENGTH) {
+                pfPassw.setText("");
+                pfPassw.setStyle("-fx-border-color: default;");
+                lblPasswW.setText("");
+                lblEmailW.setVisible(false);
+            }
+            
+            if (tfEmail.getText().trim().length() < MAX_LENGTH) {
+                tfEmail.setStyle("-fx-border-color: default;");
+                lblEmailW.setText("");
+                lblEmailW.setVisible(false);
+            }
+            
+            if (tfLogin.getText().trim().length() < MAX_LENGTH) {
+                tfLogin.setStyle("-fx-border-color: default;");
+                lblLoginW.setText("");
+                lblLoginW.setVisible(false);
+            }
+            
+            if (tfFullName.getText().trim().length() < MAX_LENGTH) {
+                tfFullName.setStyle("-fx-border-color: default;");
+                lblFNameW.setText("");
+                lblFNameW.setVisible(false);
+            }
         }
         
-        //Set textfields and passwordfiels border colors to default
-        if (pfPassw.getText().trim().length() < MAX_LENGTH) {
-            pfPassw.setText("");
-            pfPassw.setStyle("-fx-border-color: default;");            
-        }
-
-        if (tfEmail.getText().trim().length() < MAX_LENGTH) {
-            tfEmail.setStyle("-fx-border-color: default;");
-        }
-
-        if (tfLogin.getText().trim().length() < MAX_LENGTH) {
-            tfLogin.setStyle("-fx-border-color: default;");
-        }
-
-        if (tfFullName.getText().trim().length() < MAX_LENGTH) {
-            tfFullName.setStyle("-fx-border-color: default;");
-        }
-
         return fieldsLength;
     }
-    
+
     /**
      * Method that checks passwords length
+     *
      * @return
      */
     private boolean chkPasswLength() {
         boolean passwLen = true;
-        if(pfPassw.getText().length()<8){
+        if (pfPassw.getText().length() < 8) {
             passwLen = false;
             pfPassw.setStyle("-fx-border-color: red;");
-            lblWrong.setText(lblWrong.getText()
-                    + "La contraseña tiene que tener 8 caracteres mínimo");
-            lblWrong.setStyle("-fx-text-inner-color: red;");
-            lblWrong.setVisible(true);
-        }else{
+            lblPasswW.setText("La contraseña tiene que tener 8 caracteres mínimo");
+            lblPasswW.setStyle("-fx-text-inner-color: red;");
+            lblPasswW.setVisible(true);
+            pfRpassw.setText("");
+        } else {
             pfPassw.setStyle("-fx-border-color: default;");
+            lblPasswW.setText("");
+            lblPasswW.setVisible(false);
         }
         return passwLen;
     }
 
     /**
      * Method that ckecks if the passwords match
+     *
      * @return passwMatch Boolean
      */
     private boolean chkPasswMatch() {
         boolean passwMatch = true;
-        if(!pfPassw.getText().equals(pfRpassw.getText())){
+        if (!pfPassw.getText().equals(pfRpassw.getText())) {
             passwMatch = false;
             pfRpassw.setText("");
             pfRpassw.setStyle("-fx-border-color: red;");
-            lblWrong.setText(lblWrong.getText()
-                    + "La contraseña no coincide, inténtalo de nuevo.");
-            lblWrong.setStyle("-fx-text-inner-color: red;");
-            lblWrong.setVisible(true);
-        }else{
+            lblRpasswW.setText("La contraseña no coincide, inténtalo de nuevo.");
+            lblRpasswW.setStyle("-fx-text-inner-color: red;");
+            lblRpasswW.setVisible(true);
+            pfRpassw.setText("");
+        } else {
             pfRpassw.setStyle("-fx-border-color: default;");
+            lblRpasswW.setText("");
+            lblRpasswW.setVisible(false);
         }
         return passwMatch;
     }
-
     
-
 }
