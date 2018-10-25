@@ -45,6 +45,7 @@ public class PC01LoginController implements Initializable {
     private ILogic ilogic;
     private static final int MAX_CARACT = 5;
 
+
     @FXML
     private Label lblJAMP;
     @FXML
@@ -129,7 +130,9 @@ public class PC01LoginController implements Initializable {
         btnInicio.setDisable(false);
         btnOjo.setDisable(false);
         hpLink.setDisable(false);
+
          btnInicio.requestFocus();
+
         imLoading.setVisible(false);
 
         //el label de informacion estará invisible
@@ -146,6 +149,7 @@ public class PC01LoginController implements Initializable {
                 // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
                 try {
+
 
                     
                     //instancio el xml
@@ -165,12 +169,12 @@ public class PC01LoginController implements Initializable {
 
                     controller.setStage(stage);
                     //inizializo el stage
+
                     
                     imLoading.setVisible(false);
 
                     controller.initStage(root);
-                    
-                    
+
 
                 } catch (IOException ex) {
                     LOGGER.info("Error accediendo a la ventana");
@@ -181,7 +185,6 @@ public class PC01LoginController implements Initializable {
         btnOjo.setOnAction((ActionEvent ev) -> {
             showPassword();
         });
-
     }
 
     //hiperlink registrar
@@ -203,6 +206,7 @@ public class PC01LoginController implements Initializable {
             if (maxCar) {
                 //comprobamos que existen el usuario y la contraseña
                 boolean correct = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
+
 
                 if (correct) {
 
@@ -228,7 +232,7 @@ public class PC01LoginController implements Initializable {
                         //inizializo el stage
 
                         controller.initStage(root);
-                        
+
 
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
@@ -250,6 +254,7 @@ public class PC01LoginController implements Initializable {
 
                 }
             } else { //si los caracteres son mayores a los definidos
+
 
                 if (tfUsuario.getText().trim().length() > MAX_CARACT && pfContraseña.getText().trim().length() > MAX_CARACT) {
 
@@ -324,8 +329,8 @@ public class PC01LoginController implements Initializable {
         if (!this.tfUsuario.getText().trim().equals("") && !this.pfContraseña.getText().trim().equals("")) {
 
             //si son diferentes a vacio, devuelve true, eso quiere decir que hay algo escrito
+            
             isFilled = true;
-
         } else {
             isFilled = false;
         }
@@ -347,8 +352,10 @@ public class PC01LoginController implements Initializable {
 
         try {
 
+
             //  ilogic = ILogicFactory.getILogic();
             //tengo que coger el metodo userLogin();
+
 //user bean 
 //las excepciones en logica 
 //usar la implementacion de logica
@@ -356,6 +363,7 @@ public class PC01LoginController implements Initializable {
             String nombre = "paula";
 
 //declarar un atributo de la clase de test 
+
             // comprobar que esta correcto, vamos que en la bda existe 
             notError = true;
             lblError.setVisible(false);
@@ -378,14 +386,17 @@ public class PC01LoginController implements Initializable {
     }
 
     private void showPassword() {
+
         //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
         /*
     tfContraseña.setText(pfContraseña.getText());
+
     tfContraseña.setVisible(true);
     pfContraseña.setVisible(false);
     
     
+
          */
         if (pfContraseña.isVisible()) {
             //Change Passw textfield to visible
@@ -421,4 +432,6 @@ public class PC01LoginController implements Initializable {
         return maxcaracteres;
     }
 
+
+}
 }

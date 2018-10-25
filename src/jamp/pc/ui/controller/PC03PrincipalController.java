@@ -116,13 +116,13 @@ public class PC03PrincipalController  {
         stage.setOnShowing(this::handleWindowShowing);
         //Set control events handlers (if not set by FXML)
       
+
         //Show primary window
         stage.show();
     }
     
     private void handleWindowShowing(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
-      
         lblDate.setText("10/05/2018");
         lblEmail.setText("jampdesarrollo@gmail.com");
         lblFullName.setText("Jamp Desarrollo");
@@ -135,7 +135,9 @@ public class PC03PrincipalController  {
 
 
     private javafx.event.EventHandler<javafx.event.ActionEvent> 
+
         logOutAction(WindowEvent event1) throws IOException /*throws IOException*/ {
+
         //Shows view from GestionUsuarios.fxml
         //Load node graph from fxml file
         
@@ -151,8 +153,10 @@ public class PC03PrincipalController  {
                 ((PC01LoginController)loader.getController());
         
 
+
         controller.setILogic(iLogic); 
         controller.setStage(stage);//Initializes stage
+
 
         controller.initStage(root);
         //hides login stage
