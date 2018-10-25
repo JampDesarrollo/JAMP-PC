@@ -5,10 +5,15 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.UserBean;
+
 /**
  *
  * @author Julen
  */
 public class ILogicImplementation implements ILogic {
-    
+
+  
+
+   
 }

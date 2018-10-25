@@ -27,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -100,29 +101,28 @@ public class PC03PrincipalController  {
         LOGGER.info("Initializing Principal stage.");
         //Create a scene associated to the node graph root.
         Scene scene = new Scene(root);
-        stage= new Stage();
-        LOGGER.info("1d");
+        stage = new Stage();
+        //ventana modal
+        stage.initModality(Modality.APPLICATION_MODAL); // para que la ventana de login este detras, pero no haga nada
+       
         //Associate scene to primaryStage(Window)
         stage.setScene(scene);
-        LOGGER.info("BTS");
+        
         //Set window properties
         stage.setTitle("Principal");
         stage.setResizable(false);
-         //btnLogOut.setOnAction(logOutAction(event));
-         /* btnLogOut.setOnAction((ActionEvent ev) -> {
-                 logOutAction() throws IOException;
-            }); */
+        
         //Set window's events handlers
         stage.setOnShowing(this::handleWindowShowing);
         //Set control events handlers (if not set by FXML)
-       LOGGER.info("Little mix ");
+      
+
         //Show primary window
         stage.show();
     }
     
     private void handleWindowShowing(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
-        LOGGER.info("JONAS");
         lblDate.setText("10/05/2018");
         lblEmail.setText("jampdesarrollo@gmail.com");
         lblFullName.setText("Jamp Desarrollo");
@@ -135,7 +135,9 @@ public class PC03PrincipalController  {
 
 
     private javafx.event.EventHandler<javafx.event.ActionEvent> 
-        logOutAction() throws IOException /*throws IOException*/ {
+
+        logOutAction(WindowEvent event1) throws IOException /*throws IOException*/ {
+
         //Shows view from GestionUsuarios.fxml
         //Load node graph from fxml file
         
@@ -150,8 +152,12 @@ public class PC03PrincipalController  {
         PC01LoginController controller=
                 ((PC01LoginController)loader.getController());
         
+
+
         controller.setILogic(iLogic); 
         controller.setStage(stage);//Initializes stage
+
+
         controller.initStage(root);
         //hides login stage
        stage.hide();

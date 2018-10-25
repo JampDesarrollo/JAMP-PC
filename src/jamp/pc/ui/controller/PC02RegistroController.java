@@ -154,10 +154,13 @@ public class PC02RegistroController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Sign Up");
             stage.setResizable(false);
+
             stage.setOnShowing(this::handleWindowShowing);
             stage.show();
+            LOGGER.info("holis");
+            
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
+            LOGGER.log(Level.INFO, "{0} No! se ha podido abrir la ventana. \n ",
                     e.getMessage());
         }
     }
@@ -169,6 +172,7 @@ public class PC02RegistroController {
      */
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beggining PC02RegistroController::handleWindowShowing");
+        LOGGER.info("ventana de registro");
         btnBack.setDisable(false);
         btnEye.setDisable(false);
         btnSignUp.setDisable(false);
@@ -181,6 +185,7 @@ public class PC02RegistroController {
         imgLoading.setVisible(false);
         tfPassw.setVisible(false);
         tfRpassw.setVisible(false);
+
         btnBack.setOnAction((ActionEvent ev) -> {
             back();
         });
@@ -190,6 +195,7 @@ public class PC02RegistroController {
         btnSignUp.setOnAction((ActionEvent ev) -> {
             regis();
         });
+
 
     }
 
@@ -266,6 +272,7 @@ public class PC02RegistroController {
             //iLogic.userSignUp(user);
 
         }
+
         /*} catch (UserLoginExistException e) {
             lblLoginW.setText("Ese nombre de usuario existe");
             lblLoginW.setStyle("-fx-text-inner-color: red;");

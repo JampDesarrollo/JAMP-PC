@@ -33,8 +33,14 @@
          <children>
             <StackPane prefHeight="50.0" prefWidth="222.0">
                <children>
-                  <TextField fx:id="tfContraseña" prefWidth="222.0" />
-                  <PasswordField fx:id="pfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Contraseña" />
+                  <TextField fx:id="tfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0">
+                     <font>
+                        <Font name="Alef Regular" size="12.0" />
+                     </font></TextField>
+                  <PasswordField fx:id="pfContraseña" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Contraseña">
+                     <font>
+                        <Font name="Alef Regular" size="12.0" />
+                     </font></PasswordField>
                </children>
             </StackPane>
             <Button fx:id="btnOjo" mnemonicParsing="false" prefHeight="26.0" prefWidth="19.0">
@@ -48,7 +54,7 @@
             </Button>
          </children>
       </HBox>
-      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="222.0" text="Usuario o contraseña incorrecta" textFill="RED">
+      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="250.0" text="Usuario o contraseña incorrecta" textFill="RED">
          <VBox.margin>
             <Insets />
          </VBox.margin>
