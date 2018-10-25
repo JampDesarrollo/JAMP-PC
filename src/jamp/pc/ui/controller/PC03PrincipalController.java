@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,14 +13,11 @@ package jamp.pc.ui.controller;
     
 
 import jamp.pc.logic.ILogic;
-//import java.awt.event.ActionEvent;
-import javafx.event.ActionEvent;
-import java.beans.EventHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,7 +25,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -36,7 +33,7 @@ import javafx.stage.WindowEvent;
  *
  * @author 2dam
  */
-public class PC03PrincipalController  {
+public class PC03PrincipalController {
 
     @FXML
     private MenuItem btnLogOut;
@@ -69,9 +66,6 @@ public class PC03PrincipalController  {
      * Gets the Stage object related to this controller.
      * @return The Stage object initialized by this controller.
      */
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
     public Stage getStage(){
         return stage;
     }
@@ -90,81 +84,75 @@ public class PC03PrincipalController  {
      * Sets the business logic object to be used by this UI controller. 
      * @param usersManager An object implementing {@link UsersManager} interface.
      */
-    public void setUsersManager(ILogic usersManager){
-        this.iLogic=usersManager;
-    }
     
      /**
      * Initializes the controller class.
      */
-    public void initStage(Parent root) throws IOException {
+    public void initStage(Parent root) throws IOException{
         LOGGER.info("Initializing Principal stage.");
         //Create a scene associated to the node graph root.
         Scene scene = new Scene(root);
         stage = new Stage();
-        //ventana modal
-        stage.initModality(Modality.APPLICATION_MODAL); // para que la ventana de login este detras, pero no haga nada
-       
         //Associate scene to primaryStage(Window)
         stage.setScene(scene);
-        
         //Set window properties
         stage.setTitle("Principal");
-        stage.setResizable(false);
-        
+
+        stage.setResizable(true);
+
         //Set window's events handlers
-        stage.setOnShowing(this::handleWindowShowing);
+        stage.setOnShowing(this::windowShow);
         //Set control events handlers (if not set by FXML)
-      
+
+        
 
         //Show primary window
         stage.show();
     }
     
-    private void handleWindowShowing(WindowEvent event){
+    private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
-        lblDate.setText("10/05/2018");
-        lblEmail.setText("jampdesarrollo@gmail.com");
-        lblFullName.setText("Jamp Desarrollo");
-        lblLogin.setText("Jamp");
-       
+
+        UserBean user = null;
+       // lblDate.setText(user.getLastAccess());
+        //lblEmail.setText(user.getEmail());
+        //lblFullName.setText(user.getFullname());
+        //lblLogin.setText(user.getLogin());
+
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
         
-    } 
+        btnLogOut.setOnAction(this::logOutAction);
+    }
+    
 
-
-    private javafx.event.EventHandler<javafx.event.ActionEvent> 
-
-        logOutAction(WindowEvent event1) throws IOException /*throws IOException*/ {
-
-        //Shows view from GestionUsuarios.fxml
-        //Load node graph from fxml file
+    public void logOutAction(ActionEvent event){
         
-        FXMLLoader loader=
-          new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/Login.fxml"));
-       
-        Parent root = (Parent)loader.load();
-         
-            //Logger.getLogger(PC03PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-        
-        //Get controller for graph 
-        PC01LoginController controller=
-                ((PC01LoginController)loader.getController());
-        
+        try {
+            //imLoading.setVisible(true);
+            //instancio el xml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));            
+            //lo cargo en el root que es de tipo parent
+            Parent root = (Parent) loader.load();         
+            //tengo que crear un nuevo escenario
+            stage = new Stage();
+            //obtener el controlador
+            PC01LoginController controller = (PC01LoginController) loader.getController();
+            //le mando el objeto logica 
+            // controller.setIlogic(ilogic);
+            //a ese controlador le paso el stage
+            controller.setStage(stage);
+            //inizializo el stage
+            controller.initStage(root);
+            //cierro la ventana de ahora
+            stage.close();
+            } catch (IOException ex) {
+            //mensaje de "no se ha podido cargar la ventana"
+            LOGGER.info("Error accediendo a la ventana");
 
-
-        controller.setILogic(iLogic); 
-        controller.setStage(stage);//Initializes stage
-
-
-        controller.initStage(root);
-        //hides login stage
-       stage.hide();
-        return null;
+        } 
     }
 
-   
-
-
 }
+
+

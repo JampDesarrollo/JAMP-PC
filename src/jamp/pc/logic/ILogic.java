@@ -13,7 +13,9 @@ import jamp.pc.ui.controller.UserBean;
  */
 public interface ILogic {
     
- //   public void isLoginExisting(UserBean usuario);
-    
-    
+
+public void userSignUp(UserBean user) throws UserLoginExistException;
+
+public void UserLogin(UserBean user) throws UserNotExistException;
+
 }
