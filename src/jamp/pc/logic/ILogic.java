@@ -5,10 +5,16 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.UserBean;
+
 /**
  *
  * @author Paula
  */
 public interface ILogic {
     
+public void userSignUp(UserBean user) throws UserLoginExistException;
+
+public void UserLogin(UserBean user) throws UserNotExistException;
+
 }

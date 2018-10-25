@@ -5,10 +5,22 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.ui.controller.UserBean;
+
 /**
  *
  * @author Julen
  */
 public class ILogicImplementation implements ILogic {
+
+    @Override
+    public void userSignUp(UserBean user) throws UserLoginExistException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void UserLogin(UserBean user) throws UserNotExistException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
