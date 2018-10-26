@@ -8,6 +8,7 @@ package jamp.pc.ui.controller;
 
 import com.sun.javafx.scene.control.skin.TextFieldSkin;
 import jamp.pc.logic.ILogic;
+import jamp.pc.logic.ILogicFactory;
 import jamp.pc.logic.ILogicImplementation;
 import jamp.pc.logic.PasswordNotOkException;
 import jamp.pc.logic.UserNotExistException;
@@ -45,7 +46,6 @@ public class PC01LoginController implements Initializable {
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private ILogic ilogic;
     private static final int MAX_CARACT = 5;
-
 
     @FXML
     private Label lblJAMP;
@@ -132,7 +132,7 @@ public class PC01LoginController implements Initializable {
         btnOjo.setDisable(false);
         hpLink.setDisable(false);
 
-         btnInicio.requestFocus();
+        btnInicio.requestFocus();
 
         imLoading.setVisible(false);
 
@@ -143,6 +143,7 @@ public class PC01LoginController implements Initializable {
         //el this es la referencia que le pasamos al método logIn, en este caso la referencia es el botón
         btnInicio.setOnAction((ActionEvent ev) -> {
             logIn();
+            //referencia de metodo
         });
         hpLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -151,8 +152,6 @@ public class PC01LoginController implements Initializable {
 
                 try {
 
-
-                    
                     //instancio el xml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
 
@@ -160,22 +159,22 @@ public class PC01LoginController implements Initializable {
                     Parent root = (Parent) loader.load();
 
                     //tengo que crear un nuevo escenario
-                    stage = new Stage();
-
+                    // stage = new Stage();
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
-                    //le mando el objeto logica 
-                    // controller.setIlogic(ilogic);
-                    //a ese controlador le paso el stage
+                    //le mando el objeto logica l controlador 
 
+                    controller.setILogic(ilogic);
+
+                    //a ese controlador le paso el stage
                     controller.setStage(stage);
                     //inizializo el stage
 
-                    
                     imLoading.setVisible(false);
 
                     controller.initStage(root);
 
+                    stage.hide();
 
                 } catch (IOException ex) {
                     LOGGER.info("Error accediendo a la ventana");
@@ -199,63 +198,48 @@ public class PC01LoginController implements Initializable {
         //va a mirar si los campos estan llenos o no
         boolean filled = chkAllFieldsFilled();
 
-        //si los campos estan rellenos  y con menos o igual de caracteres que 255
+        //si los campos estan rellenos  
         if (filled) {
             //si estan todos los campos comentados, comprobamos los caracteres maximos 
             boolean maxCar = maxCharacters();
             //si los caracteres son menos
             if (maxCar) {
                 //comprobamos que existen el usuario y la contraseña
-                boolean correct = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
+                UserBean userReturn = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
 
+                //si esta todo correcto que vaya a la ventana principal
+                try {
+                    imLoading.setVisible(true);
+                    //instancio el xml
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
 
-                if (correct) {
+                    //lo cargo en el root que es de tipo parent
+                    Parent root = (Parent) loader.load();
 
-                    //si esta todo correcto que vaya a la ventana principal
-                    try {
-                        imLoading.setVisible(true);
-                        //instancio el xml
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
+                    //tengo que crear un nuevo escenario
+                    //stage = new Stage();
+                    //obtener el controlador
+                    PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
+                    //le mando el objeto logica 
+                    // controller.setIlogic(ilogic);
 
-                        //lo cargo en el root que es de tipo parent
-                        Parent root = (Parent) loader.load();
+                    //ilogic.UserLogin(mensaje);
+                    //a ese controlador le paso el stage
+                    controller.setStage(stage);
+                    //inizializo el stage
 
-                        //tengo que crear un nuevo escenario
-                        stage = new Stage();
+                    //le paso el usuario entero a la ventana 
+                    controller.setUser(userReturn);
+                    controller.initStage(root);
 
-                        //obtener el controlador
-                        PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
-                        //le mando el objeto logica 
-                        // controller.setIlogic(ilogic);
-                        //a ese controlador le paso el stage
-
-                        controller.setStage(stage);
-                        //inizializo el stage
-
-                        controller.initStage(root);
-
-
-                    } catch (IOException ex) {
-                        //mensaje de "no se ha podido cargar la ventana"
-                        LOGGER.info("Error accediendo a la ventana");
-
-                    }
-
-                } else {
-
-                    //se pone el foco en los campos de la contraseña y usuario
-                    btnInicio.requestFocus();
-                    //que este en rojo
-                    tfUsuario.setStyle("-fx-border-color: red;");
-                    pfContraseña.setStyle("-fx-border-color: red;");
-                    //que el texto sea visible 
-                    lblError.setText("Usuario o contraseña inccorrecta");
-                    lblError.setVisible(true);
-                    lblError.setStyle("-fx-text-inner-color: red;");
+                    stage.hide();
+                } catch (IOException ex) {
+                    //mensaje de "no se ha podido cargar la ventana"
+                    LOGGER.info("Error accediendo a la ventana");
 
                 }
-            } else { //si los caracteres son mayores a los definidos
 
+            } else { //si los caracteres son mayores a los definidos
 
                 if (tfUsuario.getText().trim().length() > MAX_CARACT && pfContraseña.getText().trim().length() > MAX_CARACT) {
 
@@ -330,7 +314,6 @@ public class PC01LoginController implements Initializable {
         if (!this.tfUsuario.getText().trim().equals("") && !this.pfContraseña.getText().trim().equals("")) {
 
             //si son diferentes a vacio, devuelve true, eso quiere decir que hay algo escrito
-            
             isFilled = true;
         } else {
             isFilled = false;
@@ -346,44 +329,46 @@ public class PC01LoginController implements Initializable {
      * @throws PasswordNotOkException
      * @throws Exception
      */
-    private boolean chkUserPassword() {
+    private UserBean chkUserPassword() {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
-        boolean notError = false;
-
+        UserBean returnUser = null;
         try {
 
+            //creo un nuevo usuario con contraseña y password solamente
+            UserBean usuario = new UserBean(tfUsuario.getText(), pfContraseña.getText());
+            returnUser = ilogic.UserLogin(usuario); // el userlogin me va a devolver el usuario entero 
 
-            //  ilogic = ILogicFactory.getILogic();
-            //tengo que coger el metodo userLogin();
+        } catch (UserNotExistException e) {
 
-//user bean 
-//las excepciones en logica 
-//usar la implementacion de logica
-//llamo al metodo de iniciar sesion de la implementacion de logica
-            String nombre = "paula";
-
-//declarar un atributo de la clase de test 
-
-            // comprobar que esta correcto, vamos que en la bda existe 
-            notError = true;
-            lblError.setVisible(false);
-            tfUsuario.setStyle("-fx-border-color: black;");
-            pfContraseña.setStyle("-fx-border-color: black;");
-            
-        } /*catch (UserNotExistException e) {
-            notError = false;
+            //se pone el foco en los campos de la contraseña y usuario
+            btnInicio.requestFocus();
+            //que este en rojo
+            tfUsuario.setStyle("-fx-border-color: red;");
+            pfContraseña.setStyle("-fx-border-color: red;");
+            //que el texto sea visible 
+            lblError.setText("Usuario o contraseña inccorrecta");
+            lblError.setVisible(true);
+            lblError.setStyle("-fx-text-inner-color: red;");
 
         } catch (PasswordNotOkException e) {
 
-            notError = false;
+            //se pone el foco en los campos de la contraseña y usuario
+            btnInicio.requestFocus();
+            //que este en rojo
+            tfUsuario.setStyle("-fx-border-color: red;");
+            pfContraseña.setStyle("-fx-border-color: red;");
+            //que el texto sea visible 
+            lblError.setText("Usuario o contraseña inccorrecta");
+            lblError.setVisible(true);
+            lblError.setStyle("-fx-text-inner-color: red;");
 
-        }*/ catch (Exception e) {
+        } catch (Exception e) {
 
             LOGGER.info("Error al conectar con la base de datos ");
         }
 
-        return notError;
+        return returnUser;
     }
 
     private void showPassword() {
@@ -405,18 +390,24 @@ public class PC01LoginController implements Initializable {
             pfContraseña.setVisible(false);
             tfContraseña.setVisible(true);
             //Change Rpassw textfield to visible
+
+            /*
             tfContraseña.setText(pfContraseña.getText());
             pfContraseña.setVisible(false);
             tfContraseña.setVisible(true);
+             */
         } else {
             //Change Passw passwordfield to visible
             pfContraseña.setText(tfContraseña.getText());
             tfContraseña.setVisible(false);
             pfContraseña.setVisible(true);
+
+            /*
             //Change Rpassw passwordfield to visible
             pfContraseña.setText(tfContraseña.getText());
             tfContraseña.setVisible(false);
             pfContraseña.setVisible(true);
+             */
         }
 
     }
@@ -433,6 +424,4 @@ public class PC01LoginController implements Initializable {
         return maxcaracteres;
     }
 
-
-}
 }
