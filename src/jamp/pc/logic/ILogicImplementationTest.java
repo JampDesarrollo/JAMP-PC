@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * @author 2dam
  */
 
+
 public class ILogicImplementationTest implements ILogic{
     private ArrayList<UserBean>users;
     
@@ -33,12 +34,12 @@ public void login(UserBean user){ //va a recibir un objeto usuario
    
         
     }
-    
-     
 
+    private ArrayList<UserBean> users = new ArrayList<UserBean>();
+    private UserBean usu;
 
-}
 //comprobando que el login existe 
+
 public void isLoginExisting(UserBean usuario){
     for (int i = 0; i < 10; i++) {
         UserBean user = new UserBean();
@@ -53,7 +54,10 @@ public void isLoginExisting(UserBean usuario){
         if (users.stream().filter(user->usuario.getLogin().equals(user.getLogin())).count()!=0){
            // LOGGER.severe("El login existe.");
             
+
         }
+
+        return usu;
     }
 
     @Override
@@ -67,5 +71,3 @@ public void isLoginExisting(UserBean usuario){
     public UserBean userLogin(UserBean user) throws UserNotExistException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-}

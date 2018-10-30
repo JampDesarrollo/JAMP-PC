@@ -45,6 +45,7 @@ public class PC03PrincipalController {
     private Label lblFullName;
     @FXML
     private Label lblEmail;
+    private UserBean user;
 
      /**
      * Maximum text fields length.
@@ -109,15 +110,18 @@ public class PC03PrincipalController {
         //Show primary window
         stage.show();
     }
-    
+    void setUser(UserBean usuario) {
+       this.user=user;
+     
+    }
     private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
 
         UserBean user = null;
        // lblDate.setText(user.getLastAccess());
-        //lblEmail.setText(user.getEmail());
-        //lblFullName.setText(user.getFullname());
-        //lblLogin.setText(user.getLogin());
+        lblEmail.setText(user.getEmail());
+        lblFullName.setText(user.getFullname());
+        lblLogin.setText(user.getLogin());
 
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
@@ -129,6 +133,7 @@ public class PC03PrincipalController {
     public void logOutAction(ActionEvent event){
         
         try {
+            stage.hide();
             //imLoading.setVisible(true);
             //instancio el xml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));            
@@ -145,13 +150,17 @@ public class PC03PrincipalController {
             //inizializo el stage
             controller.initStage(root);
             //cierro la ventana de ahora
-            stage.close();
+            
             } catch (IOException ex) {
             //mensaje de "no se ha podido cargar la ventana"
             LOGGER.info("Error accediendo a la ventana");
 
         } 
     }
+
+    
+
+    
 
 }
 
