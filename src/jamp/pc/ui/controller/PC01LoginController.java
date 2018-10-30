@@ -340,7 +340,7 @@ public class PC01LoginController implements Initializable {
 
             //creo un nuevo usuario con contraseña y password solamente
             UserBean usuario = new UserBean(tfUsuario.getText(), pfContraseña.getText());
-            returnUser = ilogic.UserLogin(usuario); // el userlogin me va a devolver el usuario entero 
+            returnUser = ilogic.userLogin(usuario); // el userlogin me va a devolver el usuario entero 
 
         } catch (UserNotExistException e) {
 

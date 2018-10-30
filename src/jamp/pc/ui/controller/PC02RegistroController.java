@@ -202,13 +202,15 @@ public class PC02RegistroController {
      */
     private void back() {
         try {
+            stage.hide();
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));
             Parent root = (Parent) loader.load();
             PC01LoginController loginStageController
                     = ((PC01LoginController) loader.getController());
             loginStageController.setStage(stage);
-            stage.hide();
+            loginStageController.initStage(root);
+
         } catch (IOException e) {
             LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());

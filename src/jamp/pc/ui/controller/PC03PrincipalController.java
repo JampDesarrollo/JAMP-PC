@@ -119,9 +119,9 @@ public class PC03PrincipalController {
 
         UserBean user = null;
        // lblDate.setText(user.getLastAccess());
-        lblEmail.setText(user.getEmail());
+        /*lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
-        lblLogin.setText(user.getLogin());
+        lblLogin.setText(user.getLogin());*/
 
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
