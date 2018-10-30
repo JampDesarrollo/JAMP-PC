@@ -5,31 +5,48 @@
  */
 package jamp.pc.ui.controller;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+
 /**
  *
  * @author 2dam
  */
-public class UserBean {
-    
+public class UserBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private int id;
     private String login;
     private String email;
     private String fullname;
     private String password;
-    private enum status{DISABLED, ENABLED};
-    private enum privilege{USER, ADMIN};
+
+    private enum status {
+        DISABLED, ENABLED
+    };
+
+    private enum privilege {
+        USER, ADMIN
+    };
     private Timestamp lastAccess;
     private Timestamp lastPasswordChange;
+
+    public UserBean() {
+
+    }
     
-    UserBean(String login, String email, String fullName, String passw, 
+    public UserBean(String login, String passw) {
+            
+    }
+
+    UserBean(String login, String email, String fullName, String passw,
             Timestamp lastAccess, Timestamp lasPasswChange) {
         this.login = login;
         this.email = email;
         this.fullname = fullName;
         this.password = passw;
         this.lastAccess = lastAccess;
-        this.lastPasswordChange = lastPasswordChange;        
+        this.lastPasswordChange = lasPasswChange;
     }
 
     public int getId() {
@@ -87,6 +104,5 @@ public class UserBean {
     public void setLastPasswordChange(Timestamp lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
-    
-    
+
 }
