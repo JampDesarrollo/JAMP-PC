@@ -6,7 +6,6 @@
 package jamp.pc.ui.controller;
 
 import jamp.pc.logic.ILogic;
-import jamp.pc.logic.ILogicImplementation;
 import jamp.pc.logic.UserLoginExistException;
 import java.io.IOException;
 import java.sql.Timestamp;

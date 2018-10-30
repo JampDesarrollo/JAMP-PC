@@ -162,6 +162,7 @@ public class PC01LoginController implements Initializable {
                     // stage = new Stage();
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
+
                     //le mando el objeto logica l controlador 
 
                     controller.setILogic(ilogic);
@@ -207,6 +208,7 @@ public class PC01LoginController implements Initializable {
                 //comprobamos que existen el usuario y la contraseña
                 UserBean userReturn = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
 
+
                 //si esta todo correcto que vaya a la ventana principal
                 try {
                     imLoading.setVisible(true);
@@ -215,6 +217,7 @@ public class PC01LoginController implements Initializable {
 
                     //lo cargo en el root que es de tipo parent
                     Parent root = (Parent) loader.load();
+
 
                     //tengo que crear un nuevo escenario
                     //stage = new Stage();
