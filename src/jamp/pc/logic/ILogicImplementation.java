@@ -5,6 +5,7 @@
  */
 package jamp.pc.logic;
 
+import jamp.pc.logic.socketClient.SocketClient;
 import jamp.pc.ui.controller.UserBean;
 
 /**
@@ -13,15 +14,19 @@ import jamp.pc.ui.controller.UserBean;
  */
 public class ILogicImplementation implements ILogic {
 
-
+    private SocketClient socket;
+    private UserBean returnUser;
+    
     @Override
     public void userSignUp(UserBean user) throws UserLoginExistException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        socket.signUp(user);
     }
 
     @Override
-    public void UserLogin(UserBean user) throws UserNotExistException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException {
+       returnUser = socket.logIn(user);
+        
+        return returnUser;
     }
   
 }
