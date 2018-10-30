@@ -165,7 +165,7 @@ public class PC01LoginController implements Initializable {
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
                     //le mando el objeto logica 
-                    // controller.setIlogic(ilogic);
+                     controller.setILogic(ilogic);
                     //a ese controlador le paso el stage
 
                     controller.setStage(stage);
@@ -221,7 +221,7 @@ public class PC01LoginController implements Initializable {
                         Parent root = (Parent) loader.load();
 
                         //tengo que crear un nuevo escenario
-                        stage = new Stage();
+                        //stage = new Stage();
 
                         //obtener el controlador
                         PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
@@ -229,11 +229,11 @@ public class PC01LoginController implements Initializable {
                         // controller.setIlogic(ilogic);
                         //a ese controlador le paso el stage
 
-                        controller.setStage(stage);
+                        //controller.setStage(stage);
                         //inizializo el stage
 
                         controller.initStage(root);
-
+                        stage.hide();
 
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
