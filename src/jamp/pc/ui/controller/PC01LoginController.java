@@ -13,6 +13,8 @@ import jamp.pc.logic.ILogicImplementation;
 import jamp.pc.logic.PasswordNotOkException;
 import jamp.pc.logic.UserNotExistException;
 import static jamp.pc.ui.controller.PC03PrincipalController.LOGGER;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,16 +38,17 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * FXML Controller class esta clase es la que controla los eventos de la primera
+ * ventana
  *
- * @author 2dam
+ * @author paula
  */
 public class PC01LoginController implements Initializable {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private ILogic ilogic;
-    private static final int MAX_CARACT = 5;
+    private static final int MAX_CARACT = 255;
 
     @FXML
     private Label lblJAMP;
@@ -85,44 +88,37 @@ public class PC01LoginController implements Initializable {
      * @param stage
      */
     public void setStage(Stage stage) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.stage = stage;
 
     }
 
     public void setILogic(ILogic ILogic) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.ilogic = ILogic;
     }
 
     /**
+     * Metodo que inicializa la escena
      *
-     * @param root
+     * @param root recibe el parametro root, que es donde esta guardado el 
+     * archivo xml
      */
     public void initStage(Parent root) {  //recibo el root, AHÍ tengo el archivo XML
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         LOGGER.info("Initializing Login ");
         //creo la escena y le paso la que esta cargada en root
         Scene scene = new Scene(root);
-
         //asociar la escena con el escenario
         stage.setScene(scene);
-
         //titulo de la ventana
         stage.setTitle("Login");
         stage.setResizable(false);
-
         //cuando haga el metodo setOnShowing, haga el metodo handlewindowshowing
         stage.setOnShowing(this::handleWindowShowing);
-
         //muestro la ventana, me lleva al handlewindowshowing
         stage.show();
-
     }
 
-    //metodo handlewindowshowing, que va a inicializar el estado de los componentes
     /**
-     *
+     * Metodo que inicializa el estado de los componentes de la ventana de login
      * @param event
      */
     public void handleWindowShowing(WindowEvent event) {
@@ -131,16 +127,11 @@ public class PC01LoginController implements Initializable {
         btnInicio.setDisable(false);
         btnOjo.setDisable(false);
         hpLink.setDisable(false);
-
         btnInicio.requestFocus();
-
         imLoading.setVisible(false);
-
+        tfContraseña.setVisible(false);
         //el label de informacion estará invisible
         lblError.setVisible(false);
-
-        //crear acciones para los bototones en cuanto sean pulsados
-        //el this es la referencia que le pasamos al método logIn, en este caso la referencia es el botón
         btnInicio.setOnAction((ActionEvent ev) -> {
             logIn();
             //referencia de metodo
@@ -148,34 +139,23 @@ public class PC01LoginController implements Initializable {
         hpLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) { //cuando le doy al link de registrar
-                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
                 try {
-
-                    //instancio el xml
+                   //instancio el xml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
-
                     //lo cargo en el root que es de tipo parent
                     Parent root = (Parent) loader.load();
-
                     //tengo que crear un nuevo escenario
                     // stage = new Stage();
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
                     //le mando el objeto logica l controlador 
-
                     controller.setILogic(ilogic);
-
                     //a ese controlador le paso el stage
                     controller.setStage(stage);
                     //inizializo el stage
-
                     imLoading.setVisible(false);
-
                     controller.initStage(root);
-
                     stage.hide();
-
                 } catch (IOException ex) {
                     LOGGER.info("Error accediendo a la ventana");
                 }
@@ -186,90 +166,78 @@ public class PC01LoginController implements Initializable {
             showPassword();
         });
     }
-
-    //hiperlink registrar
-    //boton iniciar sesion
     /**
-     *
-     * @param event
+     * Sirve para poder hacer todas las comprobaciones necesarias para poder 
+     * iniciar sesion y en caso de que todo este correcto 
+     * pasar a la ventana principal.
+     * Dentro de este metodo se haran llamadas a diferentes metodos que harán 
+     * esas comprobaciones
      */
     public void logIn() {
-
-        //va a mirar si los campos estan llenos o no
+       //va a mirar si los campos estan llenos o no
         boolean filled = chkAllFieldsFilled();
-
         //si los campos estan rellenos  
         if (filled) {
             //si estan todos los campos comentados, comprobamos los caracteres maximos 
+            tfUsuario.setStyle("-fx-border-color: -fx-box-color;");
+            pfContraseña.setStyle("-fx-border-color: -fx-box-color;");
+            lblError.setVisible(false);
             boolean maxCar = maxCharacters();
             //si los caracteres son menos
             if (maxCar) {
+                tfUsuario.setStyle("-fx-border-color: -fx-box-color;");
+                pfContraseña.setStyle("-fx-border-color: -fx-box-color;");
+                lblError.setVisible(false);
                 //comprobamos que existen el usuario y la contraseña
                 UserBean userReturn = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
-
                 //si esta todo correcto que vaya a la ventana principal
+                if(userReturn != null){ // si lo que devuelve es diferente a null 
                 try {
                     imLoading.setVisible(true);
                     //instancio el xml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
-
                     //lo cargo en el root que es de tipo parent
                     Parent root = (Parent) loader.load();
-
-                    //tengo que crear un nuevo escenario
-                    //stage = new Stage();
                     //obtener el controlador
                     PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
                     //le mando el objeto logica 
                     // controller.setIlogic(ilogic);
-
                     //ilogic.UserLogin(mensaje);
                     //a ese controlador le paso el stage
                     controller.setStage(stage);
                     //inizializo el stage
-
                     //le paso el usuario entero a la ventana 
                     controller.setUser(userReturn);
                     controller.initStage(root);
-
                     stage.hide();
                 } catch (IOException ex) {
                     //mensaje de "no se ha podido cargar la ventana"
                     LOGGER.info("Error accediendo a la ventana");
-
                 }
 
-            } else { //si los caracteres son mayores a los definidos
-
+            }} else { //si los caracteres son mayores a los definidos
                 if (tfUsuario.getText().trim().length() > MAX_CARACT && pfContraseña.getText().trim().length() > MAX_CARACT) {
-
                     btnInicio.requestFocus();
                     tfUsuario.setStyle("-fx-border-color: red;");
                     pfContraseña.setStyle("-fx-border-color: red;");
                     lblError.setText("Demasiados caracteres");
                     lblError.setVisible(true);
                     lblError.setStyle("-fx-text-inner-color: red;");
-
                 } else if (tfUsuario.getText().trim().length() > MAX_CARACT) {
-
                     btnInicio.requestFocus();
                     tfUsuario.setStyle("-fx-border-color: red;");
                     lblError.setText("Demasiados caracteres");
                     lblError.setVisible(true);
                     lblError.setStyle("-fx-text-inner-color: red;");
                 } else {
-
                     btnInicio.requestFocus();
                     pfContraseña.setStyle("-fx-border-color: red;");
                     lblError.setText("Demasiados caracteres");
                     lblError.setVisible(true);
                     lblError.setStyle("-fx-text-inner-color: red;");
-
                 }
-
             }
         } else {
-
             //se va a enfocar los campos y se le va a cambiar el texto del label
             // enfocar los campos
             if (tfUsuario.getText().trim().equals("") && pfContraseña.getText().trim().equals("")) {
@@ -288,9 +256,7 @@ public class PC01LoginController implements Initializable {
                 lblError.setText("Todos los campos deben de estar rellenos");
                 lblError.setVisible(true);
                 lblError.setStyle("-fx-text-inner-color: red;");
-
             } else {
-
                 btnInicio.requestFocus();
                 //que este en rojo
                 pfContraseña.setStyle("-fx-border-color: red;");
@@ -304,86 +270,58 @@ public class PC01LoginController implements Initializable {
     }
 
     /**
-     *
-     * @return devuelve un boolean de si
+     * Metodo para saber si los campos estan llenos o no
+     * @return boolean devuelve un booleano ndicando si estan todos los campos llenos o no
      */
     private boolean chkAllFieldsFilled() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         boolean isFilled = false;
-
         if (!this.tfUsuario.getText().trim().equals("") && !this.pfContraseña.getText().trim().equals("")) {
-
             //si son diferentes a vacio, devuelve true, eso quiere decir que hay algo escrito
             isFilled = true;
         } else {
             isFilled = false;
         }
-
         return isFilled;
-
     }
 
-    /**
-     *
-     * @return @throws UserNotExistException
-     * @throws PasswordNotOkException
-     * @throws Exception
-     */
+   /**
+    * Metodo que sirve para comprobar si el usuario y la contrasña que se hen metido son correctas
+    * @return en caso de que este todo correcto, devolverá el usuario para poder mostrarlo en la ventana principal
+    */
     private UserBean chkUserPassword() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
         UserBean returnUser = null;
         try {
-
             //creo un nuevo usuario con contraseña y password solamente
             UserBean usuario = new UserBean(tfUsuario.getText(), pfContraseña.getText());
-            returnUser = ilogic.UserLogin(usuario); // el userlogin me va a devolver el usuario entero 
-
+            returnUser = ilogic.userLogin(usuario); // el userlogin me va a devolver el usuario entero 
         } catch (UserNotExistException e) {
-
-            //se pone el foco en los campos de la contraseña y usuario
+            //se pone el foco en el usuario
             btnInicio.requestFocus();
             //que este en rojo
             tfUsuario.setStyle("-fx-border-color: red;");
-            pfContraseña.setStyle("-fx-border-color: red;");
+             pfContraseña.setStyle("-fx-border-color: red;");
             //que el texto sea visible 
             lblError.setText("Usuario o contraseña inccorrecta");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
-
         } catch (PasswordNotOkException e) {
-
-            //se pone el foco en los campos de la contraseña y usuario
+            //se pone el foco en el campos de la contraseña 
             btnInicio.requestFocus();
-            //que este en rojo
             tfUsuario.setStyle("-fx-border-color: red;");
             pfContraseña.setStyle("-fx-border-color: red;");
             //que el texto sea visible 
             lblError.setText("Usuario o contraseña inccorrecta");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
-
         } catch (Exception e) {
-
             LOGGER.info("Error al conectar con la base de datos ");
         }
-
         return returnUser;
     }
-
-    private void showPassword() {
-
-        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
-        /*
-    tfContraseña.setText(pfContraseña.getText());
-
-    tfContraseña.setVisible(true);
-    pfContraseña.setVisible(false);
-    
-    
-
-         */
+    /**
+     * Metodo que sirve para poder hacer visible u ocultar la contraseña
+     */
+    private void showPassword() {     
         if (pfContraseña.isVisible()) {
             //Change Passw textfield to visible
             tfContraseña.setText(pfContraseña.getText());
@@ -395,7 +333,8 @@ public class PC01LoginController implements Initializable {
             tfContraseña.setText(pfContraseña.getText());
             pfContraseña.setVisible(false);
             tfContraseña.setVisible(true);
-             */
+            */
+             
         } else {
             //Change Passw passwordfield to visible
             pfContraseña.setText(tfContraseña.getText());
@@ -411,16 +350,17 @@ public class PC01LoginController implements Initializable {
         }
 
     }
-
+    /**
+     * Sirve para poder saber si los campos se pasan de una cierta cantidad de caracteres
+     * @return devuelve un boolean indicando si se han pasado de caracteres o no
+     */
     private boolean maxCharacters() {
-        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         boolean maxcaracteres = false;
         if (tfUsuario.getText().trim().length() < MAX_CARACT && pfContraseña.getText().trim().length() < MAX_CARACT) {
             maxcaracteres = true;
         } else {
             maxcaracteres = false;
         }
-
         return maxcaracteres;
     }
 
