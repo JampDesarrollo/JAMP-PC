@@ -148,6 +148,7 @@ public class PC01LoginController implements Initializable {
                     // stage = new Stage();
                     //obtener el controlador
                     PC02RegistroController controller = (PC02RegistroController) loader.getController();
+
                     //le mando el objeto logica l controlador 
                     controller.setILogic(ilogic);
                     //a ese controlador le paso el stage
@@ -190,6 +191,8 @@ public class PC01LoginController implements Initializable {
                 lblError.setVisible(false);
                 //comprobamos que existen el usuario y la contraseña
                 UserBean userReturn = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
+
+
                 //si esta todo correcto que vaya a la ventana principal
                 if(userReturn != null){ // si lo que devuelve es diferente a null 
                 try {
@@ -294,6 +297,7 @@ public class PC01LoginController implements Initializable {
             //creo un nuevo usuario con contraseña y password solamente
             UserBean usuario = new UserBean(tfUsuario.getText(), pfContraseña.getText());
             returnUser = ilogic.userLogin(usuario); // el userlogin me va a devolver el usuario entero 
+
         } catch (UserNotExistException e) {
             //se pone el foco en el usuario
             btnInicio.requestFocus();

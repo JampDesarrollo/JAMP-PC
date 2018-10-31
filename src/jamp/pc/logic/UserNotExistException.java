@@ -18,5 +18,8 @@ public class UserNotExistException extends Exception {
         super(msg);
         
     }
+
+    public UserNotExistException() {
+    }
     
 }
