@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import messageuserbean.UserBean;
 
 /**
  * FXML Controller class for users sign up view. It contains event handlers
@@ -262,6 +263,7 @@ public class PC02RegistroController {
                 UserBean user = new UserBean(tfLogin.getText().trim(),
                         tfEmail.getText().trim(), tfFullName.getText().trim(),
                         pfPassw.getText().trim(), now, now);
+                LOGGER.info("UserSignUp of user");
                 //Recibo la Ilogic que me pasa Paula
                 iLogic.userSignUp(user);
 
@@ -286,14 +288,15 @@ public class PC02RegistroController {
         } catch (UserLoginExistException e) {
             lblLoginW.setText("Ese nombre de usuario existe");
             lblLoginW.setStyle("-fx-text-inner-color: red;");
+            lblLoginW.setVisible(true);
             tfLogin.setStyle("-fx-border-color:red;");
             tfLogin.setText("");
             LOGGER.severe("El login de usuario ya existe.");
         } catch (IOException e) {
-            LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
+            LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
         } catch (Exception e) {
-
+            LOGGER.log(Level.SEVERE, "Exception");
         }
 
     }
@@ -344,25 +347,25 @@ public class PC02RegistroController {
             //Set textfields and passwordfield border colors to default and 
             //hide labels if they're filled
             if (!tfEmail.getText().trim().isEmpty()) {
-                tfEmail.setStyle("-fx-border-color: default;");
+                tfEmail.setStyle("-fx-border-color: -fx-box-border;");
                 lblEmailW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (!tfLogin.getText().trim().isEmpty()) {
-                tfLogin.setStyle("-fx-border-color: default;");
+                tfLogin.setStyle("-fx-border-color: -fx-box-border;");
                 lblLoginW.setText("");
                 lblLoginW.setVisible(false);
             }
 
             if (!tfFullName.getText().trim().isEmpty()) {
-                tfFullName.setStyle("-fx-border-color: default;");
+                tfFullName.setStyle("-fx-border-color: -fx-box-border;");
                 lblFNameW.setText("");
                 lblFNameW.setVisible(false);
             }
 
             if (!pfPassw.getText().trim().isEmpty()) {
-                pfPassw.setStyle("-fx-border-color: default;");
+                pfPassw.setStyle("-fx-border-color: -fx-box-border;");
                 lblPasswW.setText("");
                 lblPasswW.setVisible(false);
             }
@@ -419,25 +422,25 @@ public class PC02RegistroController {
             //and hides tip label
             if (pfPassw.getText().trim().length() < MAX_LENGTH) {
                 pfPassw.setText("");
-                pfPassw.setStyle("-fx-border-color: default;");
+                pfPassw.setStyle("-fx-border-color: -fx-box-border;");
                 lblPasswW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (tfEmail.getText().trim().length() < MAX_LENGTH) {
-                tfEmail.setStyle("-fx-border-color: default;");
+                tfEmail.setStyle("-fx-border-color: -fx-box-border;");
                 lblEmailW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (tfLogin.getText().trim().length() < MAX_LENGTH) {
-                tfLogin.setStyle("-fx-border-color: default;");
+                tfLogin.setStyle("-fx-border-color: -fx-box-border;");
                 lblLoginW.setText("");
                 lblLoginW.setVisible(false);
             }
 
             if (tfFullName.getText().trim().length() < MAX_LENGTH) {
-                tfFullName.setStyle("-fx-border-color: default;");
+                tfFullName.setStyle("-fx-border-color: -fx-box-border;");
                 lblFNameW.setText("");
                 lblFNameW.setVisible(false);
             }
@@ -456,7 +459,7 @@ public class PC02RegistroController {
         Matcher m = p.matcher(tfEmail.getText().trim());
 
         if (m.matches()) {
-            tfEmail.setStyle("-fx-border-color: default;");
+            tfEmail.setStyle("-fx-border-color: -fx-box-border;");
             lblEmailW.setText("");
             lblEmailW.setVisible(false);
         } else {
@@ -484,7 +487,7 @@ public class PC02RegistroController {
             lblPasswW.setVisible(true);
             pfRpassw.setText("");
         } else {
-            pfPassw.setStyle("-fx-border-color: default;");
+            pfPassw.setStyle("-fx-border-color: -fx-box-border;");
             lblPasswW.setText("");
             lblPasswW.setVisible(false);
         }
@@ -507,7 +510,7 @@ public class PC02RegistroController {
             lblRpasswW.setVisible(true);
             pfRpassw.setText("");
         } else {
-            pfRpassw.setStyle("-fx-border-color: default;");
+            pfRpassw.setStyle("-fx-border-color: -fx-box-border;");
             lblRpasswW.setText("");
             lblRpasswW.setVisible(false);
         }
