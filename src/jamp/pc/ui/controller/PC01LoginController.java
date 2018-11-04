@@ -36,6 +36,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import messageuserbean.UserBean;
 
 /**
  * FXML Controller class esta clase es la que controla los eventos de la primera
