@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import messageuserbean.UserBean;
 
 /**
  * FXML Controller class
@@ -63,6 +64,7 @@ public class PC03PrincipalController {
      */
     protected Stage stage;
     private WindowEvent event;
+    private ILogic ilogic;
     /**
      * Gets the Stage object related to this controller.
      * @return The Stage object initialized by this controller.
@@ -158,10 +160,9 @@ public class PC03PrincipalController {
         } 
     }
 
-    
-
-    
-
+     public void setILogic(ILogic ILogic) {
+        this.ilogic = ILogic;
+    }
 }
 
 
