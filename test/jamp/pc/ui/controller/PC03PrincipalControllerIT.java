@@ -17,15 +17,20 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
- *
+ * Log out controller Test Class
  * @author Julen
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PC03PrincipalControllerIT extends ApplicationTest{
     
+    /**
+    * Method to start the application for the controller
+    * 
+    */
     public void start(Stage stage) throws Exception{   
         new UiApplicationPc03().start(stage);
     }
+    
     
     @Test
     public void test1_logOut(){
@@ -34,9 +39,11 @@ public class PC03PrincipalControllerIT extends ApplicationTest{
         FxAssert.verifyThat("lblFullName",hasText("FULL NAME LABEL"));
         FxAssert.verifyThat("lblEmail",hasText("EMAIL")); 
     }
-    
-     public void test2_logOut(){
+    /**
+    * Tesr Method to the Log Out menu item
+    */
+    public void test2_logOut(){
         clickOn("#menu");
         clickOn("#btnLogOut"); 
-     }
+    }
 }

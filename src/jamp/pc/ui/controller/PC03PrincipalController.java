@@ -6,12 +6,6 @@
  */
 package jamp.pc.ui.controller;
 
-/**
- *
- * @author Julen
- */
-    
-
 import jamp.pc.logic.ILogic;
 import java.io.IOException;
 import java.net.URL;
@@ -30,22 +24,48 @@ import javafx.stage.WindowEvent;
 import messageuserbean.UserBean;
 
 /**
- * FXML Controller class
+ * FXML Controller class for users Log out view. It contains event handlers
  *
- * @author 2dam
+ * @author Julen
  */
 public class PC03PrincipalController {
 
+    /**
+     * Log out menu item
+     */
     @FXML
     private MenuItem btnLogOut;
+    /**
+     * Last access date label
+     */
     @FXML
     private Label lblDate;
+    /**
+     * Users Login label
+     */
     @FXML
     private Label lblLogin;
+    /**
+     * Users Full name label
+     */
     @FXML
     private Label lblFullName;
+    
+    /**
+     * Users Email Label
+     */
     @FXML
     private Label lblEmail;
+    
+    /**
+     * The business logic object containing all business methods.
+     */
+    private ILogic ilogic;
+    
+     /**
+     * UserBean objet
+     */
+    
     private UserBean user;
 
      /**
@@ -63,8 +83,9 @@ public class PC03PrincipalController {
      * that this makes Application, Controller and Stage being tightly coupled.
      */
     protected Stage stage;
+    
     private WindowEvent event;
-    private ILogic ilogic;
+    
     /**
      * Gets the Stage object related to this controller.
      * @return The Stage object initialized by this controller.
@@ -79,14 +100,6 @@ public class PC03PrincipalController {
     public void setStage(Stage stage){
         this.stage=stage;
     }
-    /**
-     * The business logic object containing all business methods.
-     */
-    private ILogic iLogic;
-    /**
-     * Sets the business logic object to be used by this UI controller. 
-     * @param usersManager An object implementing {@link UsersManager} interface.
-     */
     
      /**
      * Initializes the controller class.
@@ -100,61 +113,58 @@ public class PC03PrincipalController {
         stage.setScene(scene);
         //Set window properties
         stage.setTitle("Principal");
-
         stage.setResizable(true);
-
         //Set window's events handlers
         stage.setOnShowing(this::windowShow);
-        //Set control events handlers (if not set by FXML)
-
-        
-
         //Show primary window
         stage.show();
     }
-    void setUser(UserBean usuario) {
+    void setUser(UserBean user) {
        this.user=user;
      
     }
+    /**
+     * Initializes the window when shown.
+     * @param event
+     */
     private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
 
         UserBean user = null;
-       // lblDate.setText(user.getLastAccess());
-        /*lblEmail.setText(user.getEmail());
+        //lblDate.setText(user.getLastAccess());
+        lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
-        lblLogin.setText(user.getLogin());*/
-
+        lblLogin.setText(user.getLogin());
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
         
         btnLogOut.setOnAction(this::logOutAction);
     }
     
-
+    /**
+     * Close current view and open Login view method.
+     */
     public void logOutAction(ActionEvent event){
         
         try {
+            //cierro la ventana actual
             stage.hide();
             //imLoading.setVisible(true);
             //instancio el xml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));            
             //lo cargo en el root que es de tipo parent
             Parent root = (Parent) loader.load();         
-            //tengo que crear un nuevo escenario
+            //Creamos un nuevo escenario
             stage = new Stage();
-            //obtener el controlador
+            //Obtenemos el controlador de la vista que vamos a abrir
             PC01LoginController controller = (PC01LoginController) loader.getController();
             //le mando el objeto logica 
             // controller.setIlogic(ilogic);
-            //a ese controlador le paso el stage
+            //Le pasamos el stage a ese controlaor
             controller.setStage(stage);
-            //inizializo el stage
+            //Inizializamos el stage
             controller.initStage(root);
-            //cierro la ventana de ahora
-            
             } catch (IOException ex) {
-            //mensaje de "no se ha podido cargar la ventana"
             LOGGER.info("Error accediendo a la ventana");
 
         } 
