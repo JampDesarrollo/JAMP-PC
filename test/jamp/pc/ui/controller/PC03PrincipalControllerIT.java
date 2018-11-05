@@ -5,11 +5,9 @@
  */
 package jamp.pc.ui.controller;
 
-import jamp.pc.UiApplication;
 import jamp.pc.UiApplicationPc03;
 import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import org.testfx.api.FxAssert;
@@ -40,7 +38,7 @@ public class PC03PrincipalControllerIT extends ApplicationTest{
         FxAssert.verifyThat("lblEmail",hasText("EMAIL")); 
     }
     /**
-    * Tesr Method to the Log Out menu item
+    * Test Method to the Log Out menu item
     */
     public void test2_logOut(){
         clickOn("#menu");
