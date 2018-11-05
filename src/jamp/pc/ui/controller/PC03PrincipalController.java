@@ -8,13 +8,10 @@ package jamp.pc.ui.controller;
 
 import jamp.pc.logic.ILogic;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -131,10 +128,10 @@ public class PC03PrincipalController {
         LOGGER.info("Beginning LoginController::windowShow");
 
         UserBean user = null;
-        //lblDate.setText(user.getLastAccess());
+        /*lblDate.setText(user.getLastAccess());
         lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
-        lblLogin.setText(user.getLogin());
+        lblLogin.setText(user.getLogin());*/
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
         
@@ -143,16 +140,18 @@ public class PC03PrincipalController {
     
     /**
      * Close current view and open Login view method.
+     * 
+     * @param event
      */
     public void logOutAction(ActionEvent event){
         
         try {
-            //cierro la ventana actual
+            //Cerramos la ventana actual
             stage.hide();
             //imLoading.setVisible(true);
-            //instancio el xml
+            //Instanciamos la vista FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));            
-            //lo cargo en el root que es de tipo parent
+            //La cargamos en el root
             Parent root = (Parent) loader.load();         
             //Creamos un nuevo escenario
             stage = new Stage();

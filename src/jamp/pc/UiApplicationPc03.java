@@ -3,65 +3,42 @@ package jamp.pc;
 
 import jamp.pc.logic.ILogic;
 import jamp.pc.logic.ILogicFactory;
-import jamp.pc.ui.controller.PC01LoginController;
 import jamp.pc.ui.controller.PC03PrincipalController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
-/*
- * Esta clase Aplicación, va a lanzar la primera ventana de la aplicacion que es la ventana de Login.
- */
-
 /**
- *
- * @author Paula
+ * UiAplication for test PC03 Controlle
+ * 
+ * @author Julen
  */
 public class UiApplicationPc03 extends Application{
     
-    
-   
-  
     /**
-     * Metodo que "pinta" la ventana
-     * @param stage recibe el parametro stage, que es el escenario o la ventana
+     * Method to show the Stage
+     * @param stage return the stage
      * @throws Exception 
      */
     @Override
     public void start(Stage stage) throws Exception {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
-       //vamos a cargar un objeto de la logica , para eso llamamos a la factoria 
-       ILogic iLogic = ILogicFactory.getILogic();
-       
-       
-        //Instanciamos el cargador
+        ILogic iLogic = ILogicFactory.getILogic();       
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/view/PC03Principal.fxml"));
-        
-        //Cargamos el documento en el root
         Parent root =(Parent)loader.load();
-        
-        //Obtengo el controlador, por que luego quiero pasarle el stage, entonces primero lo tengo que tener
         PC03PrincipalController controler =(PC03PrincipalController)loader.getController();
-        
-        //le paso el objeto de logica al controlador
         controler.setILogic(iLogic);
-        
-        //al metodo set stage le paso el stage
         controler.setStage(stage);
-        
-        //ial metodo initstage del controlador le paso el root
         controler.initStage(root); 
-  
-       
     }
-    
-      public static void  main(String[] args){
-    
+     /**
+     * Method to launch start
+     */
+      
+    public static void  main(String[] args){
         //Lanza el metodo start
-        launch();
-    
+        launch(); 
     }
     
 }
