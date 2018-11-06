@@ -5,7 +5,7 @@
  */
 package jamp.pc.logic;
 
-import jamp.pc.ui.controller.UserBean;
+import messageuserbean.UserBean;
 
 /**
  *
@@ -13,8 +13,8 @@ import jamp.pc.ui.controller.UserBean;
  */
 public interface ILogic {
 
-    public void userSignUp(UserBean user) throws UserLoginExistException;
+    public void userSignUp(UserBean user) throws UserLoginExistException, Exception;
 
-    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException;
+    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException, Exception;
 
 }

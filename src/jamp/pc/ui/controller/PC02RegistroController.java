@@ -209,6 +209,7 @@ public class PC02RegistroController {
             Parent root = (Parent) loader.load();
             PC01LoginController loginStageController
                     = ((PC01LoginController) loader.getController());
+            loginStageController.setILogic(iLogic);
             loginStageController.setStage(stage);
             loginStageController.initStage(root);
 
@@ -277,8 +278,9 @@ public class PC02RegistroController {
                 //obtener el controlador
                 PC03PrincipalController controller
                         = (PC03PrincipalController) loader.getController();
+                controller.setILogic(iLogic);
                 controller.setStage(stage);
-                //controller.setUser(user);
+                controller.setUser(user);
                 //inizializo el stage
                 imgLoading.setVisible(false);
                 controller.initStage(root);
@@ -292,11 +294,20 @@ public class PC02RegistroController {
             tfLogin.setStyle("-fx-border-color:red;");
             tfLogin.setText("");
             LOGGER.severe("El login de usuario ya existe.");
+            imgLoading.setVisible(false);
         } catch (IOException e) {
+            lblRpasswW.setText("Ha habido un error con la conexion");
+            lblRpasswW.setStyle("-fx-text-inner-color: red;");
+            lblRpasswW.setVisible(true);
             LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
+            imgLoading.setVisible(false);
         } catch (Exception e) {
+            lblRpasswW.setText("Ha habido un error");
+            lblRpasswW.setStyle("-fx-text-inner-color: red;");
+            lblRpasswW.setVisible(true);
             LOGGER.log(Level.SEVERE, "Exception");
+            imgLoading.setVisible(false);
         }
 
     }
