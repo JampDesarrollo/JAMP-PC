@@ -9,55 +9,42 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
-/*
- * Esta clase Aplicación, va a lanzar la primera ventana de la aplicacion que es la ventana de Login.
- */
-
 /**
- *
+ * Clase que va a lanzar la primera ventana de la aplicación, la ventana de Login.
  * @author Paula
  */
 public class UiApplication extends Application{
-    
-    
-   
-  
+     
     /**
-     * Metodo que "pinta" la ventana
-     * @param stage recibe el parametro stage, que es el escenario o la ventana
+     * Metodo que sirve para cargar la primera ventana de la aplicacion
+     * @param stage recibe el parametro stage que es el escenario
+     * Method that throws the first stage and receives the stage.
      * @throws Exception 
      */
     @Override
     public void start(Stage stage) throws Exception {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-       //vamos a cargar un objeto de la logica , para eso llamamos a la factoria 
-       ILogic iLogic = ILogicFactory.getILogic();
-       
-       
+        //vamos a cargar un objeto de la logica , para eso llamamos a la factoria 
+        ILogic iLogic = ILogicFactory.getILogic();    
         //Instanciamos el cargador
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/view/PC01Login.fxml"));
-        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/view/PC01Login.fxml"));        
         //Cargamos el documento en el root
-        Parent root =(Parent)loader.load();
-        
+        Parent root =(Parent)loader.load();        
         //Obtengo el controlador, por que luego quiero pasarle el stage, entonces primero lo tengo que tener
-        PC01LoginController controler =(PC01LoginController)loader.getController();
-        
+        PC01LoginController controler =(PC01LoginController)loader.getController();        
         //le paso el objeto de logica al controlador
-        controler.setILogic(iLogic);
-        
-        //al metodo set stage le paso el stage
-        controler.setStage(stage);
-        
-        //ial metodo initstage del controlador le paso el root
-        controler.initStage(root); 
-  
-       
+        controler.setILogic(iLogic);        
+        //al metodo set stage le paso el stage, al controlador le paso el escenario
+        controler.setStage(stage);        
+        //al metodo initstage del controlador le paso el root
+        controler.initStage(root);        
     }
     
+    /**
+     * Metodo qque sirve para poder lanzar el metodo start de esta misma clase 
+     * @param args 
+     * Method that throws the method start of this class
+     */
       public static void  main(String[] args){
-    
         //Lanza el metodo start
         launch();
     
