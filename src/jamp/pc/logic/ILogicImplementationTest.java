@@ -3,52 +3,60 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/*
 package jamp.pc.logic;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-import jamp.pc.ui.controller.UserBean;
+import messageuserbean.UserBean;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  *
  * @author 2dam
  */
-/*
-public class ILogicImplementationTest {
+public class ILogicImplementationTest implements ILogic {
 
-    private ArrayList<UserBean> users = new ArrayList<UserBean>();
-    private UserBean usu;
+    private final ArrayList<UserBean> users = new ArrayList<>();
 
-//comprobando que el login existe 
-    //  @Override
+    public ILogicImplementationTest() { //va a recibir un objeto usuario
+
+        //crear un array list de usuarios
+        for (int i = 0; i < 10; i++) {
+            UserBean user = new UserBean();
+            //tengo que mirar el usuario que le llega y ver si esta o no
+            user.setLogin("login" + i); //creo 10 usuarios
+            user.setPassword("pass " + i); //creo 10 password
+            user.setFullname("login" + i);
+            users.add(user);
+        }
+
+    }
+//metodo para la vista         
+
+    @Override
     public void userSignUp(UserBean user) throws UserLoginExistException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (users.stream().filter(u -> u.getLogin().equals(user.getLogin())).count() != 0) {
+            throw new UserLoginExistException();
+        } else {
+            users.add(user);
+        }
     }
 
-    // @Override
-    public UserBean UserLogin(UserBean user) throws UserNotExistException {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException {
+        List usersWithLogin = users.stream().filter(u -> u.getLogin().equals(user.getLogin())).collect(Collectors.toList());
+        UserBean usser;
+        if (usersWithLogin.size() == 0) {
+            throw new UserNotExistException();
 
-        
-        //creo los usuarios y las password
-        for (int i = 0; i < 10; i++) {
-            usu = new UserBean(); // voy a crear 10 usuarios
-            usu.setLogin("login" + i); //le añado a los usuarios el login  y el password
-            usu.setPassword("pass " + i);
-            users.add(usu); // meto a l usuario en el array list de los usuarios
+        } else if (!((UserBean) usersWithLogin.get(1)).getPassword().equals(user.getPassword())) {
 
+            throw new PasswordNotOkException();
+
+        } else {
+            usser= ((UserBean) usersWithLogin.get(1));
         }
-        
-        //compruebo si existe o no 
-        LOGGER.info("Validating Login existence.");
-        if (users.stream().filter(usu -> usu.getLogin().equals(user.getLogin())).count() != 0) {
-            LOGGER.severe("El usuario existe.");
-
-        }
-
-        return usu;
+        return usser;
     }
 
 }
-*/

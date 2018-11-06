@@ -7,7 +7,6 @@ package jamp.pc.ui.controller;
 
 import jamp.pc.UiApplication;
 import javafx.stage.Stage;
-import static jdk.management.resource.ResourceContextFactory.isEnabled;
 import org.junit.Test;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;

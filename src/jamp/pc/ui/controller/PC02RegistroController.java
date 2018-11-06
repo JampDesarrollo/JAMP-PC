@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import messageuserbean.UserBean;
 
 /**
  * FXML Controller class for users sign up view. It contains event handlers
@@ -154,13 +157,11 @@ public class PC02RegistroController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Sign Up");
             stage.setResizable(false);
-
             stage.setOnShowing(this::handleWindowShowing);
             stage.show();
-            LOGGER.info("holis");
-            
+
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "{0} No! se ha podido abrir la ventana. \n ",
+            LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
         }
     }
@@ -185,7 +186,6 @@ public class PC02RegistroController {
         imgLoading.setVisible(false);
         tfPassw.setVisible(false);
         tfRpassw.setVisible(false);
-
         btnBack.setOnAction((ActionEvent ev) -> {
             back();
         });
@@ -196,7 +196,6 @@ public class PC02RegistroController {
             regis();
         });
 
-
     }
 
     /**
@@ -204,13 +203,15 @@ public class PC02RegistroController {
      */
     private void back() {
         try {
+            stage.hide();
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));
             Parent root = (Parent) loader.load();
             PC01LoginController loginStageController
                     = ((PC01LoginController) loader.getController());
             loginStageController.setStage(stage);
-            stage.hide();
+            loginStageController.initStage(root);
+
         } catch (IOException e) {
             LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
@@ -244,42 +245,59 @@ public class PC02RegistroController {
     }
 
     /**
-     * Sign up method that first checks localy if all field are filled,
-     * if field length are correct, if passwordlength is not less than 8 
-     * characters and if password and repetition match. Then Signs Up a new
-     * User.
+     * Sign up method that first checks localy if all field are filled, if field
+     * length are correct, if passwordlength is not less than 8 characters and
+     * if password and repetition match. Then Signs Up a new User.
      */
     private void regis() {
         boolean filled = chkAllFieldsFilled();
         boolean fieldsLength = chkFieldsLength();
-        boolean passwLen = true;
-        if (filled) {
-            passwLen = chkPasswLength();
-        }
-        boolean passwMatch = true;
-        if (passwLen) {
-            passwMatch = chkPasswMatch();
-        }
+        boolean emailCorrect = chkEmailPattern();
+        boolean passwLen = chkPasswLength();
+        boolean passwMatch = chkPasswMatch();
 
-        // try {
-        if (filled && fieldsLength && passwMatch && passwLen) {
-            imgLoading.setVisible(true);
-            Timestamp now = new Timestamp(System.currentTimeMillis());
-            UserBean user = new UserBean(tfLogin.getText().trim(),
-                    tfEmail.getText(), tfFullName.getText(),
-                    pfPassw.getText(), now, now);
-            //Recibo la Ilogic que me pasa Paula
-            //iLogic.userSignUp(user);
+        try {
+            if (filled && fieldsLength && emailCorrect && passwMatch && passwLen) {
+                imgLoading.setVisible(true);
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                UserBean user = new UserBean(tfLogin.getText().trim(),
+                        tfEmail.getText().trim(), tfFullName.getText().trim(),
+                        pfPassw.getText().trim(), now, now);
+                LOGGER.info("UserSignUp of user");
+                //Recibo la Ilogic que me pasa Paula
+                iLogic.userSignUp(user);
 
-        }
+                this.stage.hide();
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
+                //lo cargo en el root que es de tipo parent
+                Parent root = (Parent) loader.load();
+                //tengo que crear un nuevo escenario
+                stage = new Stage();
+                //obtener el controlador
+                PC03PrincipalController controller
+                        = (PC03PrincipalController) loader.getController();
+                controller.setStage(stage);
+                //controller.setUser(user);
+                //inizializo el stage
+                imgLoading.setVisible(false);
+                controller.initStage(root);
 
-        /*} catch (UserLoginExistException e) {
+            }
+
+        } catch (UserLoginExistException e) {
             lblLoginW.setText("Ese nombre de usuario existe");
             lblLoginW.setStyle("-fx-text-inner-color: red;");
+            lblLoginW.setVisible(true);
             tfLogin.setStyle("-fx-border-color:red;");
             tfLogin.setText("");
             LOGGER.severe("El login de usuario ya existe.");
-       }*/
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
+                    e.getMessage());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Exception");
+        }
 
     }
 
@@ -329,25 +347,25 @@ public class PC02RegistroController {
             //Set textfields and passwordfield border colors to default and 
             //hide labels if they're filled
             if (!tfEmail.getText().trim().isEmpty()) {
-                tfEmail.setStyle("-fx-border-color: default;");
+                tfEmail.setStyle("-fx-border-color: -fx-box-border;");
                 lblEmailW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (!tfLogin.getText().trim().isEmpty()) {
-                tfLogin.setStyle("-fx-border-color: default;");
+                tfLogin.setStyle("-fx-border-color: -fx-box-border;");
                 lblLoginW.setText("");
                 lblLoginW.setVisible(false);
             }
 
             if (!tfFullName.getText().trim().isEmpty()) {
-                tfFullName.setStyle("-fx-border-color: default;");
+                tfFullName.setStyle("-fx-border-color: -fx-box-border;");
                 lblFNameW.setText("");
                 lblFNameW.setVisible(false);
             }
 
             if (!pfPassw.getText().trim().isEmpty()) {
-                pfPassw.setStyle("-fx-border-color: default;");
+                pfPassw.setStyle("-fx-border-color: -fx-box-border;");
                 lblPasswW.setText("");
                 lblPasswW.setVisible(false);
             }
@@ -404,31 +422,54 @@ public class PC02RegistroController {
             //and hides tip label
             if (pfPassw.getText().trim().length() < MAX_LENGTH) {
                 pfPassw.setText("");
-                pfPassw.setStyle("-fx-border-color: default;");
+                pfPassw.setStyle("-fx-border-color: -fx-box-border;");
                 lblPasswW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (tfEmail.getText().trim().length() < MAX_LENGTH) {
-                tfEmail.setStyle("-fx-border-color: default;");
+                tfEmail.setStyle("-fx-border-color: -fx-box-border;");
                 lblEmailW.setText("");
                 lblEmailW.setVisible(false);
             }
 
             if (tfLogin.getText().trim().length() < MAX_LENGTH) {
-                tfLogin.setStyle("-fx-border-color: default;");
+                tfLogin.setStyle("-fx-border-color: -fx-box-border;");
                 lblLoginW.setText("");
                 lblLoginW.setVisible(false);
             }
 
             if (tfFullName.getText().trim().length() < MAX_LENGTH) {
-                tfFullName.setStyle("-fx-border-color: default;");
+                tfFullName.setStyle("-fx-border-color: -fx-box-border;");
                 lblFNameW.setText("");
                 lblFNameW.setVisible(false);
             }
         }
 
         return fieldsLength;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private boolean chkEmailPattern() {
+        boolean emailOk = true;
+        Pattern p = Pattern.compile("^[A-Z0-9._-]+@[A-Z0-9]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(tfEmail.getText().trim());
+
+        if (m.matches()) {
+            tfEmail.setStyle("-fx-border-color: -fx-box-border;");
+            lblEmailW.setText("");
+            lblEmailW.setVisible(false);
+        } else {
+            emailOk = false;
+            tfEmail.setStyle("-fx-border-color: red;");
+            lblEmailW.setText("Introduzca un email correcto");
+            lblEmailW.setStyle("-fx-text-inner-color: red;");
+            lblEmailW.setVisible(true);
+        }
+        return emailOk;
     }
 
     /**
@@ -446,7 +487,7 @@ public class PC02RegistroController {
             lblPasswW.setVisible(true);
             pfRpassw.setText("");
         } else {
-            pfPassw.setStyle("-fx-border-color: default;");
+            pfPassw.setStyle("-fx-border-color: -fx-box-border;");
             lblPasswW.setText("");
             lblPasswW.setVisible(false);
         }
@@ -469,7 +510,7 @@ public class PC02RegistroController {
             lblRpasswW.setVisible(true);
             pfRpassw.setText("");
         } else {
-            pfRpassw.setStyle("-fx-border-color: default;");
+            pfRpassw.setStyle("-fx-border-color: -fx-box-border;");
             lblRpasswW.setText("");
             lblRpasswW.setVisible(false);
         }

@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import messageuserbean.UserBean;
 
 /**
  * FXML Controller class esta clase es la que controla los eventos de la primera
@@ -264,7 +265,7 @@ public class PC01LoginController implements Initializable {
                         //obtener el controlador
                         PC03PrincipalController controller = (PC03PrincipalController) loader.getController();
                         //le mando el objeto logica 
-                        controller.setIlogic(ilogic);
+                        controller.setILogic(ilogic);
                         //ilogic.UserLogin(mensaje);
                         //a ese controlador le paso el stage
                         controller.setStage(stage);
