@@ -22,18 +22,15 @@ public class ILogicImplementation implements ILogic {
             = Logger.getLogger("jamp.pc.logic.socketClient");
 
     @Override
-    public void userSignUp(UserBean user) throws UserLoginExistException {
+    public void userSignUp(UserBean user) throws UserLoginExistException, Exception {
         LOGGER.info("userSignUp in ILogicImplementation");
-        try {
-            socket.signUp(user);
-        } catch (Exception ex) {
-            Logger.getLogger(ILogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        socket.signUp(user);
 
     }
 
     @Override
-    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException {
+    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException, Exception {
         returnUser = socket.logIn(user);
 
         return returnUser;

@@ -37,7 +37,7 @@ public class SocketClient {
      * @param user
      * @return
      */
-    public UserBean logIn(UserBean user) {
+    public UserBean logIn(UserBean user) throws PasswordNotOkException, UserNotExistException, Exception {
 
         Socket client = null;
         ObjectInputStream input = null;
@@ -69,9 +69,9 @@ public class SocketClient {
 
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
             try {
                 if (client != null) {
                     client.close();
@@ -124,8 +124,6 @@ public class SocketClient {
             System.out.println("Error: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE,"Error Exception", e.getMessage());
         } finally {
             try {
                 if (client != null) {
