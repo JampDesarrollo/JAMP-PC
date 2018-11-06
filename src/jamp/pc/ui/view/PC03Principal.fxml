@@ -14,7 +14,7 @@
   <children>
     <MenuBar style="-fx-background-color: #005192;" VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" style="-fx-color: #005192;" text="File">
+        <Menu fx:id="menu" mnemonicParsing="false" style="-fx-color: #005192;" text="File">
           <items>
             <MenuItem fx:id="btnLogOut" mnemonicParsing="false" style="-fx-text-fill: Black;" text="Cerrar Sesión" />
           </items>
