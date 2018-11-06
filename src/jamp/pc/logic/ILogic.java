@@ -16,6 +16,6 @@ public interface ILogic {
 
 public void userSignUp(UserBean user) throws UserLoginExistException;
 
-public void UserLogin(UserBean user) throws UserNotExistException;
+public void userLogin(UserBean user) throws UserNotExistException;
 
 }
