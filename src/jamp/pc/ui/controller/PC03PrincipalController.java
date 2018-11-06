@@ -98,6 +98,10 @@ public class PC03PrincipalController {
         this.stage=stage;
     }
     
+    public void setILogic(ILogic ILogic) {
+        this.ilogic = ILogic;
+    }
+    
      /**
      * Initializes the controller class.
      */
@@ -158,7 +162,7 @@ public class PC03PrincipalController {
             //Obtenemos el controlador de la vista que vamos a abrir
             PC01LoginController controller = (PC01LoginController) loader.getController();
             //le mando el objeto logica 
-            // controller.setIlogic(ilogic);
+            controller.setILogic(ilogic);
             //Le pasamos el stage a ese controlaor
             controller.setStage(stage);
             //Inizializamos el stage
@@ -169,9 +173,6 @@ public class PC03PrincipalController {
         } 
     }
 
-     public void setILogic(ILogic ILogic) {
-        this.ilogic = ILogic;
-    }
 }
 
 
