@@ -16,7 +16,7 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
- * Log out controller Test Class
+ * LogOut controller Test Class
  * @author Julen
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -24,13 +24,17 @@ public class PC03PrincipalControllerIT extends ApplicationTest{
     
     /**
     * Method to start the application for the controller
-    * 
+    * @param stage Primary Stage object
+    * @throws Exception If there is any error
     */
     @Override
     public void start(Stage stage) throws Exception{   
         new UiApplication().start(stage);
     }
     
+     /**
+     * Test of initial state of login view before open PrincipalView.
+     */
     @Test
     public void test1_initIteraction(){
         clickOn("#tfUsuario");
@@ -40,6 +44,10 @@ public class PC03PrincipalControllerIT extends ApplicationTest{
         clickOn("#btnInicio");
         verifyThat("#principalPane", isVisible());    
     }
+    
+     /**
+     * Test of initial state of PrincipalView.
+     */
     @Test
     public void test2_initState(){
         verifyThat("#menuBar", isVisible());
@@ -49,12 +57,16 @@ public class PC03PrincipalControllerIT extends ApplicationTest{
         
     }
     
+    /**
+     * Test that verify labels
+     */
     @Test
     public void test3_label(){
         verifyThat("lblLogin",hasText("jul"));
         verifyThat("lblFullName",hasText("Julen Zarate"));
         verifyThat("lblEmail",hasText("jul@gmaill.com")); 
     }
+    
     /**
     * Test Method to the Log Out menu item
     */
