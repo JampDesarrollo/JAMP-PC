@@ -8,6 +8,7 @@ package jamp.pc.ui.controller;
 
 import jamp.pc.logic.ILogic;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,6 +105,8 @@ public class PC03PrincipalController {
     
      /**
      * Initializes the controller class.
+     * @param root
+     * @throws java.io.IOException
      */
     public void initStage(Parent root) throws IOException{
         LOGGER.info("Initializing Principal stage.");
@@ -131,11 +134,15 @@ public class PC03PrincipalController {
     private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
 
-        UserBean user = null;
-        /*lblDate.setText(user.getLastAccess());
+       
+        String date = new Date(user.getLastAccess().getTime()).toString();
+        
+        System.out.println(date);
+        
+        lblDate.setText(date);
         lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
-        lblLogin.setText(user.getLogin());*/
+        lblLogin.setText(user.getLogin());
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
         
@@ -174,5 +181,3 @@ public class PC03PrincipalController {
     }
 
 }
-
-

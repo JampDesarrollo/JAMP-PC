@@ -43,7 +43,7 @@ public class PC01LoginController implements Initializable {
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private ILogic ilogic;
-    private static final int MAX_CARACT = 5;
+    private static final int MAX_CARACT = 255;
     
     /**
      * Text field de Jamp, el titulo
@@ -129,6 +129,8 @@ public class PC01LoginController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
