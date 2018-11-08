@@ -275,7 +275,7 @@ public class PC01LoginController implements Initializable {
                         //le paso el usuario entero a la ventana 
                         controller.setUser(userReturn);
                         controller.initStage(root);
-                        stage.hide();
+                        //stage.hide();
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
                         LOGGER.severe("Error accediendo a la ventana ");
