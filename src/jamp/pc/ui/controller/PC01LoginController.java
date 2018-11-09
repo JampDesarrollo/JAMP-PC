@@ -209,7 +209,8 @@ public class PC01LoginController{
      * @param event
      */
     public void handleWindowShowing(WindowEvent event) {
-        LOGGER.info("Initializing handle WindowShowing of Login ");
+
+        LOGGER.info("ventana de inicio sesion handleWindowShowing");
         //los botones van a estar activos desde el primero momento
         btnInicio.setDisable(false);
         btnOjo.setDisable(false);
@@ -260,8 +261,9 @@ public class PC01LoginController{
      * It serves to be able to make all the necessary checks to be able to
      * initiate session.
      */
-    public void logIn(ActionEvent ev) {
-          LOGGER.info("clickOn IniciarSesion ");
+    public void logIn() {
+        LOGGER.info("ventana de login  inicio sesion");
+
         //va a mirar si los campos estan llenos o no
         boolean filled = chkAllFieldsFilled();
         //si los campos estan llenos  
@@ -301,8 +303,10 @@ public class PC01LoginController{
                         //le paso el usuario entero a la ventana 
                         controller.setUser(userReturn);
                         controller.initStage(root);
-
-                        stage.hide();
+                        tfUsuario.setText("");
+                        pfContraseña.setText("");
+                        imLoading.setVisible(false);
+                        //stage.hide();
 
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
