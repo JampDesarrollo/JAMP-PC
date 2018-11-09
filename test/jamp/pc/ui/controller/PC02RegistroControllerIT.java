@@ -75,13 +75,13 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#imgLoading", isInvisible());
     }
 
-    /**
-     * @Test public void test2_toolTipVisible() { //Test si los campos estan
-     * como deberian al inizializarse moveTo("#pfPassw"); sleep(1000);
-     * verifyThat("#tip", isVisible());
-  }
-     */
-
+    /*@Test
+    public void test2_toolTipVisible() {
+        //Test si los campos estan  como deberian al inizializarse moveTo
+        ("#pfPassw");
+        sleep(1000);
+        verifyThat("#tip", isVisible());
+    }*/
     /**
      * Eye button sets visible and invisible passwordfields and textfields.
      */
@@ -243,12 +243,12 @@ public class PC02RegistroControllerIT extends ApplicationTest {
     /**
      * Test Button back takes you back to previous view.
      */
-    @Test
+    /*@Test
     public void testu_backButton() {
 
         clickOn("#hpLink");
         sleep(1000);
         clickOn("#btnBack");
         verifyThat("#loginPane", isVisible());
-    }
+    }*/
 }

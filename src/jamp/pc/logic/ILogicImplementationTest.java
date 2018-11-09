@@ -46,7 +46,7 @@ public class ILogicImplementationTest implements ILogic {
     public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException {
         List usersWithLogin = users.stream().filter(u -> u.getLogin().equals(user.getLogin())).collect(Collectors.toList());
         UserBean usser;
-        if (usersWithLogin.size() == 0) {
+        if (usersWithLogin.isEmpty()) {
             throw new UserNotExistException();
 
         } else if (!((UserBean) usersWithLogin.get(1)).getPassword().equals(user.getPassword())) {
@@ -54,7 +54,7 @@ public class ILogicImplementationTest implements ILogic {
             throw new PasswordNotOkException();
 
         } else {
-            usser= ((UserBean) usersWithLogin.get(1));
+            usser = ((UserBean) usersWithLogin.get(1));
         }
         return usser;
     }

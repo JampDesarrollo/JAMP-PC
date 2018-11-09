@@ -177,8 +177,8 @@ public class PC02RegistroController {
             stage.show();
 
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
-                    e.getMessage());
+            LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
+                    e);
         }
     }
 
@@ -207,7 +207,6 @@ public class PC02RegistroController {
         pfPassw.setTooltip(
                 new Tooltip("Utiliza 8 caracteres como mínimo con una "
                         + "combinación de letras, números y símbolos"));
-
         btnSignUp.setMnemonicParsing(true);
         btnSignUp.setText("_Registrarse");
 
@@ -217,22 +216,8 @@ public class PC02RegistroController {
      * Close current view and open Login view method.
      */
     private void back(ActionEvent ev) {
-       LOGGER.info("ventana de registro back");
-        //try {
+        LOGGER.info("ventana de registro back");
         stage.hide();
-        /*FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));
-            Parent root = (Parent) loader.load();
-            PC01LoginController loginStageController
-                    = ((PC01LoginController) loader.getController());
-            loginStageController.setILogic(iLogic);
-            loginStageController.setStage(stage);
-            //loginStageController.initStage(root);*/
-
- /*} catch (IOException e) {
-            LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
-                    e.getMessage());
-        }*/
     }
 
     /**
@@ -311,20 +296,21 @@ public class PC02RegistroController {
             lblLoginW.setVisible(true);
             tfLogin.setStyle("-fx-border-color:red;");
             tfLogin.setText("");
-            LOGGER.severe("El login de usuario ya existe.");
+            LOGGER.log(Level.SEVERE, "{0} El login de usuario ya existe. \n ",
+                    e);
             imgLoading.setVisible(false);
         } catch (IOException e) {
             lblRpasswW.setText("Ha habido un error con la conexion");
             lblRpasswW.setStyle("-fx-text-inner-color: red;");
             lblRpasswW.setVisible(true);
             LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
-                    e.getMessage());
+                    e);
             imgLoading.setVisible(false);
         } catch (Exception e) {
             lblRpasswW.setText("Ha habido un error");
             lblRpasswW.setStyle("-fx-text-inner-color: red;");
             lblRpasswW.setVisible(true);
-            LOGGER.log(Level.SEVERE, "Exception");
+            LOGGER.log(Level.SEVERE, "{0} Exception \n ", e);
             imgLoading.setVisible(false);
         }
 
