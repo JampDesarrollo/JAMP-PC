@@ -23,7 +23,7 @@ import messageuserbean.Message;
  * Socket client class for communication between socket client and server. It
  * contains two methods for user management.
  *
- * @author Ander
+ * @author Ander, Julen
  *
  */
 public class SocketClient {
@@ -47,6 +47,10 @@ public class SocketClient {
      *
      * @param user The user tipped in
      * @return UserBean Whole information of the user who has logged in
+     * @throws jamp.pc.logic.PasswordNotOkException Exception thrown when
+     * password not ok
+     * @throws jamp.pc.logic.UserNotExistException Exception thrown when user
+     * doesn't exist
      */
     public UserBean logIn(UserBean user) throws PasswordNotOkException, UserNotExistException, Exception {
 
@@ -79,9 +83,10 @@ public class SocketClient {
             }
 
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error: ", e);
+            throw new Exception();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Clase no encontrada", ex);
         } finally {
             try {
                 if (client != null) {
@@ -94,7 +99,7 @@ public class SocketClient {
                     output.close();
                 }
             } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Error cerrando socket: ", e);
             }
         }
 
@@ -105,6 +110,7 @@ public class SocketClient {
      * Method for signing up a user
      *
      * @param user The user tipped in
+     * @throws jamp.pc.logic.UserLoginExistException
      */
     public void signUp(UserBean user) throws UserLoginExistException, Exception {
 
@@ -133,10 +139,10 @@ public class SocketClient {
                     throw new Exception();
             }
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error: ", e);
+            throw new Exception();
         } catch (ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
+            LOGGER.log(Level.SEVERE, "Clase no encontrada", e);
             try {
                 if (client != null) {
                     client.close();
@@ -147,8 +153,8 @@ public class SocketClient {
                 if (output != null) {
                     output.close();
                 }
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+            } catch (IOException e2) {
+                LOGGER.log(Level.SEVERE, "Error cerrando socket", e2);
             }
         }
     }

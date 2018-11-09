@@ -7,14 +7,16 @@ package jamp.pc.logic;
 
 /**
  * Exception thrown when the user login exist on database
+ *
  * @author ander
  */
 public class UserLoginExistException extends Exception {
-     public UserLoginExistException(String msg){
+
+    public UserLoginExistException(String msg) {
         super(msg);
     }
 
     public UserLoginExistException() {
-    
+
     }
 }
