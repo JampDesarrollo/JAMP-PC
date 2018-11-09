@@ -5,8 +5,6 @@
  */
 package jamp.pc.logic;
 
-import jamp.pc.ui.controller.*;
-
 /**
  *
  * @author paula

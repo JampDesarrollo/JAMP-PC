@@ -120,7 +120,7 @@ public class PC03PrincipalController {
         //Show primary window
         stage.show();
     }
-    void setUser(UserBean user) {
+    public void setUser(UserBean user) {
        this.user=user;
      
     }
@@ -131,11 +131,10 @@ public class PC03PrincipalController {
     private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
 
-        UserBean user = null;
-        /*lblDate.setText(user.getLastAccess());
+        //lblDate.setText(user.getLastAccess());
         lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
-        lblLogin.setText(user.getLogin());*/
+        lblLogin.setText(user.getLogin());
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
         
@@ -149,10 +148,10 @@ public class PC03PrincipalController {
      */
     public void logOutAction(ActionEvent event){
         
-        try {
+       // try {
             //Cerramos la ventana actual
             stage.hide();
-            //imLoading.setVisible(true);
+           /* //imLoading.setVisible(true);
             //Instanciamos la vista FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));            
             //La cargamos en el root
@@ -170,7 +169,7 @@ public class PC03PrincipalController {
             } catch (IOException ex) {
             LOGGER.info("Error accediendo a la ventana");
 
-        } 
+        } */
     }
 
 }

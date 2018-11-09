@@ -43,7 +43,7 @@ public class PC01LoginController implements Initializable {
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private ILogic ilogic;
-    private static final int MAX_CARACT = 5;
+    private static final int MAX_CARACT = 255;
     
     /**
      * Text field de Jamp, el titulo
@@ -184,7 +184,7 @@ public class PC01LoginController implements Initializable {
      * @param event
      */
     public void handleWindowShowing(WindowEvent event) {
-
+        LOGGER.info("ventana de inicio sesion handleWindowShowing");
         //los botones van a estar activos desde el primero momento
         btnInicio.setDisable(false);
         btnOjo.setDisable(false);
@@ -199,8 +199,10 @@ public class PC01LoginController implements Initializable {
             //referencia de metodo
         });
         hpLink.setOnAction(new EventHandler<ActionEvent>() {
+            
             @Override
             public void handle(ActionEvent event) { //cuando le doy al link de registrar
+                LOGGER.info("ventana de inicio sesion hplink");
                 try {
                     //instancio el xml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
@@ -216,7 +218,7 @@ public class PC01LoginController implements Initializable {
                     controller.setStage(stage);
                     //inizializo el stage
                     controller.initStage(root);
-                    stage.hide();
+                    //stage.hide();
                 } catch (IOException ex) {
                     LOGGER.severe("Error accediendo a la ventana ");
                 }
@@ -238,6 +240,7 @@ public class PC01LoginController implements Initializable {
      * initiate session. 
      */
     public void logIn() {
+        LOGGER.info("ventana de login  inicio sesion");
         //va a mirar si los campos estan llenos o no
         boolean filled = chkAllFieldsFilled();
         //si los campos estan rellenos  
@@ -273,7 +276,10 @@ public class PC01LoginController implements Initializable {
                         //le paso el usuario entero a la ventana 
                         controller.setUser(userReturn);
                         controller.initStage(root);
-                        stage.hide();
+                        tfUsuario.setText("");
+                        pfContraseña.setText("");
+                        imLoading.setVisible(false);
+                        //stage.hide();
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
                         LOGGER.severe("Error accediendo a la ventana ");

@@ -19,23 +19,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import messageuserbean.Message;
 
+/**
+ * Socket client class for communication between socket client and server. It
+ * contains two methods for user management.
+ *
+ * @author Ander
+ *
+ */
 public class SocketClient {
 
+    /**
+     * Logger object used to log messages for application.
+     */
     private static final Logger LOGGER
             = Logger.getLogger("jamp.pc.logic.socketClient");
     /**
-     *
+     * Port from which the connection to the server socket will be done.
      */
     private final String PORT = ResourceBundle.getBundle("jamp.pc.logic.socketClient.config").getString("PORT");
     /**
-     *
+     * IP address the server socket has to connect to.
      */
     private final String IP = ResourceBundle.getBundle("jamp.pc.logic.socketClient.config").getString("IP");
 
     /**
+     * Method for login in a user.
      *
-     * @param user
-     * @return
+     * @param user The user tipped in
+     * @return UserBean Whole information of the user who has logged in
      */
     public UserBean logIn(UserBean user) throws PasswordNotOkException, UserNotExistException, Exception {
 
@@ -71,7 +82,7 @@ public class SocketClient {
             System.out.println("Error: " + e.getMessage());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             try {
                 if (client != null) {
                     client.close();
@@ -91,8 +102,9 @@ public class SocketClient {
     }
 
     /**
+     * Method for signing up a user
      *
-     * @param user
+     * @param user The user tipped in
      */
     public void signUp(UserBean user) throws UserLoginExistException, Exception {
 
@@ -136,7 +148,7 @@ public class SocketClient {
                     output.close();
                 }
             } catch (IOException e) {
-               System.out.println("Error: " + e.getMessage());
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
