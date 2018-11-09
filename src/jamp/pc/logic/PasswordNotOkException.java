@@ -6,7 +6,8 @@
 package jamp.pc.logic;
 
 /**
- *
+ * Clase de excepcion para cuando la contraseña no esta bien
+ * Excepction class for when the password doesn't exist.
  * @author paula
  */
 public class PasswordNotOkException extends Exception{

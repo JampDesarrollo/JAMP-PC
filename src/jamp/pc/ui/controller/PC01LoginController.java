@@ -10,14 +10,10 @@ import jamp.pc.logic.ILogic;
 import jamp.pc.logic.PasswordNotOkException;
 import jamp.pc.logic.UserNotExistException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,131 +32,152 @@ import messageuserbean.UserBean;
  * ventana, la de Login.
  *
  * Controller class for Login view.
+ *
  * @author paula
  */
-public class PC01LoginController implements Initializable {
+public class PC01LoginController{
 
-    private Stage stage;
-    private static final Logger LOGGER = Logger.getLogger("package.class");
-    private ILogic ilogic;
-    private static final int MAX_CARACT = 255;
-    
     /**
-     * Text field de Jamp, el titulo
-     * 
+     * Atributo para el stage. 
+     * Attribute for the stage.
+     */
+    private Stage stage;
+
+    /**
+     * Atributo para poder sacar textos de información.
+     * Attribute to appear the information text.
+     */
+    private static final Logger LOGGER = Logger.getLogger("package.class");
+
+    /**
+     * Atributo ilogic para poder pasarles a las otras clases el objeto logica.
+     * Attribute ilogic to be able to pass the ilogic object to the others
+     * class.
+     */
+    private ILogic ilogic;
+
+    /**
+     * Maximos caracteres que se van a poder meter.
+     * Maximum characters that can be inserted
+     */
+    private static final int MAX_CARACT = 255;
+
+    /**
+     * Text field de Jamp, el titulo The tittle
      */
     @FXML
     private Label lblJAMP;
-    
+
     /**
-     * Text Field del usuario
+     * Text Field del usuario 
      * User text field
      */
     @FXML
     private TextField tfUsuario;
-    
+
     /**
-     * Password field para la contraseña
+     * Password field para la contraseña 
      * password field for the password
      */
     @FXML
     private PasswordField pfContraseña;
-    
+
     /**
-     * Boton para ver la contraseña
+     * Boton para ver la contraseña 
      * Button to see the password
      */
     @FXML
     private Button btnOjo;
-    
+
     /**
-     * Imagen del boton
+     * Imagen del boton 
      * Button image
      */
     @FXML
     private ImageView imgOjo;
-    
+
     /**
-     * Label que marca todos los errores
-     * Laber for the errors
+     * Label que marca todos los errores 
+     * Label for the errors
      */
     @FXML
     private Label lblError;
-    
+
     /**
-     * Boton para iniciar sesion
+     * Boton para iniciar sesion 
      * Button for login
      */
     @FXML
     private Button btnInicio;
-    
+
     /**
      * Barra separadora
      */
     @FXML
     private Separator spSeparador;
-    
+
     /**
      * Label de informacion
      */
     @FXML
     private Label lblCuenta;
-    
+
     /**
-     * Link para ir a la ventana de Registro.
+     * Link para ir a la ventana de Registro. 
      * Link to go to signup window.
      */
     @FXML
     private Hyperlink hpLink;
-    
+
     /**
-     * Textfield de la contraseña
+     * Textfield de la contraseña 
      * textfield for the password
      */
     @FXML
     private TextField tfContraseña;
-    
+
     /**
-     * Gif de espera
+     * Gif de espera. 
      * gif for the wait.
      */
     @FXML
     private ImageView imLoading;
 
     /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-    */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-   
-    /**
+     * Metodo que hace set del stage para esta clase.
      *
-     * @param stage
+     * @param stage recibe el stage. 
+     * 
+     * Sets the Stage object related to this controller.
+     * @param stage it receives the stage.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
 
     }
+
     /**
-     * Metodo que recibe el objeto logica de la clase aplicacion y lo asocia 
-     * con el metodo logica de esta clase.
-     * Method that receives the ilogic param of the class application.
+     * Metodo que recibe el objeto logica de la clase aplicacion y lo asocia con
+     * el metodo logica de esta clase.
+     *
      * @param ILogic recibe el objeto logica que se le manda desde aplicacion.
+     *
+     * Method that receives the ilogic param of the class application.
      * @param ILogic it receives the logic object that came from the application
      * class
+     *
+     *
      */
     public void setILogic(ILogic ILogic) {
         this.ilogic = ILogic;
     }
 
     /**
-     * Metodo que inicializa la escena.
+     * Metodo que inicializa la escena de la ventana de Login.
+     *
      * @param root recibe el parametro root, que es donde esta guardado el
      * archivo xml.
-     * 
+     *
      * Method that initializes the "Login" window. It receives the param root,
      * where is the fxml file.
      * @param root receives the root parameter
@@ -176,6 +193,11 @@ public class PC01LoginController implements Initializable {
         stage.setResizable(false);
         //cuando haga el metodo setOnShowing, haga el metodo handlewindowshowing
         stage.setOnShowing(this::handleWindowShowing);
+        //manejadores de eventos
+        hpLink.setOnAction(this::register);
+        btnInicio.setOnAction(this::logIn);
+        btnOjo.setOnAction(this::showPassword);
+        
         //muestro la ventana
         stage.show();
     }
@@ -183,9 +205,11 @@ public class PC01LoginController implements Initializable {
     /**
      * Metodo que inicializa el estado de los componentes de la ventana de login
      * Method that initializes the state of the components of the window.
+     *
      * @param event
      */
     public void handleWindowShowing(WindowEvent event) {
+
         LOGGER.info("ventana de inicio sesion handleWindowShowing");
         //los botones van a estar activos desde el primero momento
         btnInicio.setDisable(false);
@@ -196,73 +220,74 @@ public class PC01LoginController implements Initializable {
         tfContraseña.setVisible(false);
         //el label de informacion estará invisible
         lblError.setVisible(false);
-        btnInicio.setOnAction((ActionEvent ev) -> {
-            logIn();
-            //referencia de metodo
-        });
-        hpLink.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) { //cuando le doy al link de registrar
-                LOGGER.info("ventana de inicio sesion hplink");
-                try {
-                    //instancio el xml
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
-                    //lo cargo en el root que es de tipo parent
-                    Parent root = (Parent) loader.load();
-                    //tengo que crear un nuevo escenario
-                    // stage = new Stage();
-                    //obtener el controlador
-                    PC02RegistroController controller = (PC02RegistroController) loader.getController();
-                    //le mando el objeto logica al controlador 
-                    controller.setILogic(ilogic);
-                    //a ese controlador le paso el stage
-                    controller.setStage(stage);
-                    //inizializo el stage
-                    controller.initStage(root);
-                    //stage.hide();
-                } catch (IOException ex) {
-                    LOGGER.severe("Error accediendo a la ventana ");
-                }
-            }
-        });
-
-        btnOjo.setOnAction((ActionEvent ev) -> {
-            showPassword();
-        });
+      
     }
 
+    /**
+     * Metodo para poder ir a la ventana de registro
+     * @param ev 
+     * Method to go to the register window.
+     */ 
+    public void register(ActionEvent ev) {
+        LOGGER.info("clickOn Hyperlink");
+        try {
+            //instancio el xml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC02Registro.fxml"));
+            //lo cargo en el root que es de tipo parent
+            Parent root = (Parent) loader.load();
+            //tengo que crear un nuevo escenario
+            // stage = new Stage();
+            //obtener el controlador
+            PC02RegistroController controller = (PC02RegistroController) loader.getController();
+            //le mando el objeto logica al controlador 
+            controller.setILogic(ilogic);
+            //a ese controlador le paso el stage
+            controller.setStage(stage);
+            //inizializo el stage
+            controller.initStage(root);
+          //  stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe("Error accediendo a la ventana ");
+        }
+    }
+
+    
     /**
      * Sirve para poder hacer todas las comprobaciones necesarias para poder
      * iniciar sesion y en caso de que todo este correcto pasar a la ventana
      * principal. Dentro de este metodo se haran llamadas a diferentes metodos
      * que harán esas comprobaciones.
-     * 
+     *
      * It serves to be able to make all the necessary checks to be able to
-     * initiate session. 
+     * initiate session.
      */
     public void logIn() {
         LOGGER.info("ventana de login  inicio sesion");
+
         //va a mirar si los campos estan llenos o no
         boolean filled = chkAllFieldsFilled();
-        //si los campos estan rellenos  
-        if (filled) {
-            //si estan todos los campos comentados, comprobamos los caracteres maximos 
+        //si los campos estan llenos  
+        if (filled) {  
+            //que se quiten los errores
             tfUsuario.setStyle("-fx-border-color: -fx-box-border;");
             pfContraseña.setStyle("-fx-border-color: -fx-box-border;");
             lblError.setVisible(false);
+            //si estan todos los campos comentados, comprobamos los caracteres maximos 
             boolean maxCar = maxCharacters();
-            //si los caracteres son menos
+            //si los caracteres son menos que el maximo
             if (maxCar) {
+                //si todo esta bien metido, que se quiten los errores
                 tfUsuario.setStyle("-fx-border-color: -fx-box-border;");
                 pfContraseña.setStyle("-fx-border-color: -fx-box-border;");
-                lblError.setVisible(false);
+                lblError.setVisible(false);               
+                //como vamos a hacer comprobaciones con la base de datos, ponemos el gif
+                imLoading.setVisible(true);
                 //comprobamos que existen el usuario y la contraseña
                 UserBean userReturn = chkUserPassword(); //le envio el texto de lo que ha puesto en los campos
-                //si esta todo correcto que vaya a la ventana principal
-              if (userReturn != null) { // si lo que devuelve es diferente a null 
+                if (userReturn != null) { // si lo que devuelve es un usuario diferente a null 
                     try {
-                        imLoading.setVisible(true);
+                        //si esta todo correcto que vaya a la ventana principal
+                       
                         //instancio el xml
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
                         //lo cargo en el root que es de tipo parent
@@ -282,11 +307,11 @@ public class PC01LoginController implements Initializable {
                         pfContraseña.setText("");
                         imLoading.setVisible(false);
                         //stage.hide();
+
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
                         LOGGER.severe("Error accediendo a la ventana ");
                     }
-
                 }
             } else { //si los caracteres son mayores a los definidos
                 if (tfUsuario.getText().trim().length() > MAX_CARACT && pfContraseña.getText().trim().length() > MAX_CARACT) {
@@ -315,7 +340,7 @@ public class PC01LoginController implements Initializable {
 
                 }
             }
-        } else {
+        } else { //si algun campo o los dos estan vacios
             //se va a enfocar los campos y se le va a cambiar el texto del label
             // enfocar los campos
             if (tfUsuario.getText().trim().equals("") && pfContraseña.getText().trim().equals("")) {
@@ -351,14 +376,16 @@ public class PC01LoginController implements Initializable {
         }
 
     }
-
+   
     /**
      * Metodo para saber si los campos estan llenos o no.
+     *
      * @return boolean devuelve un booleano indicando si estan todos los campos
      * llenos o no.
-     * 
-     *  Method to know that all fields are filled. It returns a boolean.
-     *  @return boolean it returns a boolean indicating if all fields are filled or not
+     *
+     * Method to know that all fields are filled. It returns a boolean.
+     * @return boolean it returns a boolean indicating if all fields are filled
+     * or not
      */
     private boolean chkAllFieldsFilled() {
         boolean isFilled = false;
@@ -374,9 +401,10 @@ public class PC01LoginController implements Initializable {
     /**
      * Metodo que sirve para comprobar si el usuario y la contrasña que se hen
      * metido son correctas.
+     *
      * @return en caso de que este todo correcto, devolverá el usuario para
      * poder mostrarlo en la ventana principal.
-     * 
+     *
      * Method to know if the user and password are ok. If the user and password
      * are ok, it returns the all the user to be visible in the main window.
      * @return in case that everything is ok, returns the user.
@@ -397,6 +425,7 @@ public class PC01LoginController implements Initializable {
             lblError.setText("Usuario o contraseña incorrecta");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
+            imLoading.setVisible(false);
         } catch (PasswordNotOkException e) {
             //se pone el foco en el campos de la contraseña y usuario 
             btnInicio.requestFocus();
@@ -406,17 +435,25 @@ public class PC01LoginController implements Initializable {
             lblError.setText("Usuario o contraseña incorrecta");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
+            imLoading.setVisible(false);
         } catch (Exception e) {
-            LOGGER.severe("Error al conectar con la base de datos ");
+            LOGGER.severe("Error al conectar con la base de datos");
+            e.printStackTrace();
+            lblError.setText("Error al conectar con la base de datos");
+            lblError.setStyle("-fx-text-inner-color: red;");
+            lblError.setVisible(true);
+            imLoading.setVisible(false);
         }
         return returnUser;
     }
+    
 
     /**
-     * Metodo que sirve para poder hacer visible u ocultar la contraseña.
+     * Metodo que sirve para poder hacer visible u ocultar la contraseña. 
      * Method to be able to see the password or not.
      */
-    private void showPassword() {
+    private void showPassword(ActionEvent ev) {
+          LOGGER.info("ClickOn button Eye");
         if (pfContraseña.isVisible()) {
             //Si el texto esta oculto, se cambia a visible
             tfContraseña.setText(pfContraseña.getText());
@@ -434,9 +471,11 @@ public class PC01LoginController implements Initializable {
     /**
      * Sirve para poder saber si los campos se pasan de una cierta cantidad de
      * caracteres.
-     * @return devuelve un boolean indicando si se han pasado de caracteres o no.
-     *  Method to control the characters you enter in the textfield and passwordfield.
-     * It returns a boolean.
+     *
+     * @return devuelve un boolean indicando si se han pasado de caracteres o
+     * no.
+     * Method to control the characters you enter in the textfield and
+     * passwordfield. It returns a boolean.
      */
     private boolean maxCharacters() {
         boolean maxcaracteres = false;
@@ -448,4 +487,5 @@ public class PC01LoginController implements Initializable {
         return maxcaracteres;
     }
 
+   
 }
