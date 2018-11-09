@@ -5,6 +5,7 @@
  */
 package jamp.pc.logic;
 
+
 import jamp.pc.logic.socketClient.SocketClient;
 import java.util.logging.Logger;
 import messageuserbean.UserBean;

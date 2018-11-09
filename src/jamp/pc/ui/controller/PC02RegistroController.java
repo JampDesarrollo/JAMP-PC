@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -78,27 +79,27 @@ public class PC02RegistroController {
     @FXML
     private Button btnEye;
     /**
-     *
+     * Label something went wrong on Login Textfield
      */
     @FXML
     private Label lblLoginW;
     /**
-     *
+     * Label something went wrong on FullName Textfield
      */
     @FXML
     private Label lblFNameW;
     /**
-     *
+     * Label something went wrong on Email Textfield
      */
     @FXML
     private Label lblEmailW;
     /**
-     *
+     * Label something went wrong on Password field
      */
     @FXML
     private Label lblPasswW;
     /**
-     *
+     * Label something went wrong on Repetition Password field
      */
     @FXML
     private Label lblRpasswW;
@@ -117,32 +118,43 @@ public class PC02RegistroController {
      */
     @FXML
     private ImageView imgLoading;
-
+    /**
+     * Class that implements iLogic interface
+     */
     private ILogic iLogic;
+    /**
+     * The Stage object associated to the Scene controlled by this controller.
+     * This is an utility method reference that provides quick access inside the
+     * controller to the Stage object in order to make its initialization.
+     */
+    private Stage stage;
+    /**
+     * Max length writable on the fields
+     */
+    private final int MAX_LENGTH = 255;
 
+    /**
+     * Method that sets iLogic for this class
+     *
+     * @param iLogic iLogic to set
+     */
     public void setILogic(ILogic iLogic) {
         this.iLogic = iLogic;
     }
 
     /**
-     * Stage in which the scene will be loaded
-     */
-    private Stage stage;
-
-    /**
+     * Sets the Stage object related to this controller.
      *
-     * @param stage
+     * @param stage The Stage object to be initialized.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    /**
+     * Logger object used to log messages of this controller.
+     */
     private static final Logger LOGGER
             = Logger.getLogger("jamp.pc.ui.controller");
-    /**
-     *
-     */
-    private final int MAX_LENGTH = 255;
 
     /**
      * Method for initializing PC02Registro Stage.
@@ -150,6 +162,7 @@ public class PC02RegistroController {
      * @param root The Parent object
      */
     public void initStage(Parent root) {
+        LOGGER.info("ventana de registro InitStage");
         try {
             Scene scene = new Scene(root);
             stage = new Stage();
@@ -158,6 +171,9 @@ public class PC02RegistroController {
             stage.setTitle("Sign Up");
             stage.setResizable(false);
             stage.setOnShowing(this::handleWindowShowing);
+            btnBack.setOnAction(this::back);
+            btnEye.setOnAction(this::showPassword);
+            btnSignUp.setOnAction(this::signUp);
             stage.show();
 
         } catch (Exception e) {
@@ -186,44 +202,44 @@ public class PC02RegistroController {
         imgLoading.setVisible(false);
         tfPassw.setVisible(false);
         tfRpassw.setVisible(false);
-        btnBack.setOnAction((ActionEvent ev) -> {
-            back();
-        });
-        btnEye.setOnAction((ActionEvent ev) -> {
-            showPassword();
-        });
-        btnSignUp.setOnAction((ActionEvent ev) -> {
-            regis();
-        });
+        pfPassw.setVisible(true);
+        pfRpassw.setVisible(true);
+        pfPassw.setTooltip(
+                new Tooltip("Utiliza 8 caracteres como mínimo con una "
+                        + "combinación de letras, números y símbolos"));
+
+        btnSignUp.setMnemonicParsing(true);
+        btnSignUp.setText("_Registrarse");
 
     }
 
     /**
      * Close current view and open Login view method.
      */
-    private void back() {
-        try {
-            stage.hide();
-            FXMLLoader loader = new FXMLLoader(
+    private void back(ActionEvent ev) {
+       LOGGER.info("ventana de registro back");
+        //try {
+        stage.hide();
+        /*FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/jamp/pc/ui/view/PC01Login.fxml"));
             Parent root = (Parent) loader.load();
             PC01LoginController loginStageController
                     = ((PC01LoginController) loader.getController());
             loginStageController.setILogic(iLogic);
             loginStageController.setStage(stage);
-            loginStageController.initStage(root);
+            //loginStageController.initStage(root);*/
 
-        } catch (IOException e) {
+ /*} catch (IOException e) {
             LOGGER.log(Level.INFO, "{0} No se ha podido abrir la ventana. \n ",
                     e.getMessage());
-        }
-
+        }*/
     }
 
     /**
      * Method that sets visible or not visible password fields.
      */
-    private void showPassword() {
+    private void showPassword(ActionEvent ev) {
+        LOGGER.info("ventana de registro showpassword");
         if (pfPassw.isVisible()) {
             //Change Passw textfield to visible
             tfPassw.setText(pfPassw.getText());
@@ -247,10 +263,12 @@ public class PC02RegistroController {
 
     /**
      * Sign up method that first checks localy if all field are filled, if field
-     * length are correct, if passwordlength is not less than 8 characters and
-     * if password and repetition match. Then Signs Up a new User.
+     * length are correct, if passwordlength is not less than 8 characters, if
+     * the email pattern is correct andif password and repetition match. Then
+     * Signs Up a new User.
      */
-    private void regis() {
+    private void signUp(ActionEvent ev) {
+        LOGGER.info("ventana de registro signup");
         boolean filled = chkAllFieldsFilled();
         boolean fieldsLength = chkFieldsLength();
         boolean emailCorrect = chkEmailPattern();
@@ -461,6 +479,7 @@ public class PC02RegistroController {
     }
 
     /**
+     * Method that checks if the email follows a pattern
      *
      * @return
      */

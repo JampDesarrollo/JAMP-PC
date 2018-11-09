@@ -7,7 +7,6 @@ package jamp.pc.ui.controller;
 
 import jamp.pc.UiApplication;
 import javafx.stage.Stage;
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -16,9 +15,10 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
+import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
+ * Testing class for User's signUp controller.
  *
  * @author ander
  */
@@ -26,6 +26,7 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 public class PC02RegistroControllerIT extends ApplicationTest {
 
     /**
+     * Start application to be tested
      *
      * @param stage
      * @throws Exception
@@ -35,13 +36,21 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         new UiApplication().start(stage);
     }
 
-    @Before
-    public void goToSignUpView() {
+    /**
+     * This method takes the test to the SignUp view
+     */
+    @Test
+    public void test0_goToSignUpView() {
         clickOn("#hpLink");
+        verifyThat("#signUpPane", isVisible());
     }
 
+    /**
+     * Test of initial state of SignUp view.
+     */
     @Test
     public void test1_InitStage() {
+
         //Test si los campos estan como deberian al inizializarse
         verifyThat("#tfLogin", isEnabled());
         verifyThat("#lblLoginW", isInvisible());
@@ -66,15 +75,18 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#imgLoading", isInvisible());
     }
 
-    @Test
-    public void test2_toolTipVisible() {
-        //Test si los campos estan como deberian al inizializarse
-        moveTo("#pfPassw");
-        verifyThat("#tip", isInvisible());
-    }
+    /**
+     * @Test public void test2_toolTipVisible() { //Test si los campos estan
+     * como deberian al inizializarse moveTo("#pfPassw"); sleep(1000);
+     * verifyThat("#tip", isVisible());
+  }
+     */
 
+    /**
+     * Eye button sets visible and invisible passwordfields and textfields.
+     */
     @Test
-    public void test3_eyeButton() {
+    public void test3_eyeButtonWorks() {
         verifyThat("#pfPassw", isVisible());
         verifyThat("#tfPassw", isInvisible());
 
@@ -89,8 +101,14 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#pfRpassw", isInvisible());
         verifyThat("#tfRpassw", isVisible());
 
+        clickOn("#btnEye");
+
     }
 
+    /**
+     * Checks if all fields are filled and if their corresponding labels are
+     * visible if there's an error.
+     */
     @Test
     public void test4_allFieldsFilled() {
         clickOn("#btnSignUp");
@@ -121,20 +139,26 @@ public class PC02RegistroControllerIT extends ApplicationTest {
 
     }
 
+    /**
+     * Checks if the email writen in textfield email follows a pattern.
+     */
     @Test
     public void test5_emailPattern() {
-        clickOn("#tfEmail");
+        doubleClickOn("#tfEmail");
+        eraseText(13);
+        doubleClickOn("#tfEmail");
+        eraseText(13);
         write("correo");
         clickOn("#btnSignUp");
         verifyThat("#lblEmailW", isVisible());
-        //verifyThat("#lblEmailW", hasText("Introduzca un email correcto"));
+        verifyThat("#lblEmailW", hasText("Introduzca un email correcto"));
 
         doubleClickOn("#tfEmail");
         eraseText(6);
         write("correo@hotm.c");
         clickOn("#btnSignUp");
         verifyThat("#lblEmailW", isVisible());
-        //verifyThat("#lblEmailW", hasText("Introduzca un email correcto"));
+        verifyThat("#lblEmailW", hasText("Introduzca un email correcto"));
 
         doubleClickOn("#tfEmail");
         eraseText(13);
@@ -146,60 +170,84 @@ public class PC02RegistroControllerIT extends ApplicationTest {
 
     }
 
+    /**
+     * Checks if the passwordfield has 8 characters minimum.
+     */
     @Test
     public void test6_password8Chars() {
-        clickOn("#pfPassw");
+        doubleClickOn("#pfPassw");
         write("passwo");
         clickOn("#btnSignUp");
         verifyThat("#lblPasswW", isVisible());
-        /*verifyThat("#lblPasswW", hasText("La contraseña tiene que tener "
-                + "8 caracteres mínimo"));*/
+        verifyThat("#lblPasswW", hasText("La contraseña tiene que tener "
+                + "8 caracteres mínimo"));
 
     }
 
+    /**
+     * Checks if the passwordfield and the repetition are the same.
+     */
     @Test
     public void test7_passwordsMatch() {
-        clickOn("#pfPassw");
+        doubleClickOn("#tfEmail");
+        eraseText(13);
+        doubleClickOn("#pfPassw");
         write("password");
-        clickOn("#pfRpassw");
+        doubleClickOn("#pfRpassw");
         write("passwor");
         clickOn("#btnSignUp");
         verifyThat("#lblRpasswW", isVisible());
-        /*verifyThat("#lblRpasswW", hasText("La contraseña no coincide, "
-                + "inténtalo de nuevo."));*/
+        verifyThat("#lblRpasswW", hasText("La contraseña no coincide, "
+                + "inténtalo de nuevo."));
 
-        clickOn("#pfRpassw");
+        doubleClickOn("#pfRpassw");
         write("password");
         clickOn("#btnSignUp");
         verifyThat("#lblRpasswW", isInvisible());
 
     }
 
+    /**
+     * Checks if the labelloginWrong is visible if there's alredy a user with
+     * that login.
+     */
     @Test
-    public void test8_signUp() {
+    public void test8_userLoginExists() {
 
-        clickOn("#tfLogin");
-        write("userLogin");
-
-        clickOn("#tfFullName");
-        write("Ander Redna");
-
-        clickOn("#tfEmail");
-        write("ander@hotn.com");
-
-        clickOn("#pfPassw");
-        write("password");
-
-        clickOn("#pfRpassw");
-        write("password");
-
+        doubleClickOn("#tfLogin");
+        write("a");
+        doubleClickOn("#tfEmail");
+        write("asq@hotm.com");
         clickOn("#btnSignUp");
-        verifyThat("#imgLoading", isVisible());
+        sleep(1000);
+        verifyThat("#lblLoginW", hasText("Ese nombre de usuario existe"));
 
     }
 
+    /**
+     * Checks if it's possible to sign up a new user and takes you to the next
+     * view.
+     */
     @Test
-    public void test9_backButton() {
+    public void test9_signUp() {
+
+        doubleClickOn("#tfLogin");
+        write("userLogin");
+
+        clickOn("#btnSignUp");
+        verifyThat("#principalPane", isVisible());
+        clickOn("#menu");
+        clickOn("#btnLogOut");
+    }
+
+    /**
+     * Test Button back takes you back to previous view.
+     */
+    @Test
+    public void testu_backButton() {
+
+        clickOn("#hpLink");
+        sleep(1000);
         clickOn("#btnBack");
         verifyThat("#loginPane", isVisible());
     }
