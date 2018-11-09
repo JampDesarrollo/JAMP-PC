@@ -8,7 +8,8 @@ package jamp.pc.logic;
 import jamp.pc.ui.controller.*;
 
 /**
- *
+ * Clase de excepcion para cuando la contraseña no esta bien
+ * Excepction class for when the password doesn't exist.
  * @author paula
  */
 public class PasswordNotOkException extends Exception{
