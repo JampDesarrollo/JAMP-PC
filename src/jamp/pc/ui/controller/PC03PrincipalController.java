@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +7,7 @@ package jamp.pc.ui.controller;
 
 import jamp.pc.logic.ILogic;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,6 +104,8 @@ public class PC03PrincipalController {
     
      /**
      * Initializes the controller class.
+     * @param root
+     * @throws java.io.IOException
      */
     public void initStage(Parent root) throws IOException{
         LOGGER.info("Initializing Principal stage.");
@@ -130,8 +132,10 @@ public class PC03PrincipalController {
      */
     private void windowShow(WindowEvent event){
         LOGGER.info("Beginning LoginController::windowShow");
-
-        //lblDate.setText(user.getLastAccess());
+        
+        String date = new Date(user.getLastAccess().getTime()).toString();
+        System.out.println(date);
+        lblDate.setText(date);
         lblEmail.setText(user.getEmail());
         lblFullName.setText(user.getFullname());
         lblLogin.setText(user.getLogin());
@@ -173,5 +177,3 @@ public class PC03PrincipalController {
     }
 
 }
-
-
