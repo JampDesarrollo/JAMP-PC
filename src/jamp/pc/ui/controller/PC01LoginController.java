@@ -142,6 +142,7 @@ public class PC01LoginController{
      */
     @FXML
     private ImageView imLoading;
+
     /**
      * Metodo que hace set del stage para esta clase.
      *
@@ -300,7 +301,9 @@ public class PC01LoginController{
                         //le paso el usuario entero a la ventana 
                         controller.setUser(userReturn);
                         controller.initStage(root);
-                       // stage.hide();
+
+                        stage.hide();
+
                     } catch (IOException ex) {
                         //mensaje de "no se ha podido cargar la ventana"
                         LOGGER.severe("Error accediendo a la ventana ");

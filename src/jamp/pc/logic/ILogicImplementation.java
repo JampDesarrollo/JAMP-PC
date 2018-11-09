@@ -6,13 +6,14 @@
 package jamp.pc.logic;
 
 import jamp.pc.logic.socketClient.SocketClient;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import messageuserbean.UserBean;
 
 /**
+
  * Clase que implementa la interfaz de Logica.
  * Class that implements the logic interface.
+
  * @author Julen
  */
 public class ILogicImplementation implements ILogic {
@@ -53,13 +54,20 @@ public class ILogicImplementation implements ILogic {
      * @throws Exception If there is not connection with the database jumps this exception.
      */
 
+    /**
+     * This method register a new UserBean in database
+     * @param user The UserBean object to be added
+     * @throws UserLoginExistException, Exception.
+     */
     @Override
-    public void userSignUp(UserBean user) throws UserLoginExistException, Exception {
+    public void userSignUp(UserBean user) 
+            throws UserLoginExistException, Exception {
         LOGGER.info("userSignUp in ILogicImplementation");
 
         socket.signUp(user);
 
     }
+
     
       /**
      * Metodo para hacer el login del usuario. Comprueba con la base de datos si el usuario
@@ -84,8 +92,10 @@ public class ILogicImplementation implements ILogic {
      * 
      */
   
+
     @Override
-    public UserBean userLogin(UserBean user) throws UserNotExistException, PasswordNotOkException, Exception {
+    public UserBean userLogin(UserBean user) 
+            throws UserNotExistException, PasswordNotOkException, Exception {
         returnUser = socket.logIn(user);
 
         return returnUser;
