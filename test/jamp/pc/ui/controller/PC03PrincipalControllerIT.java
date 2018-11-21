@@ -9,6 +9,7 @@ import jamp.pc.UiApplication;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
@@ -38,9 +39,9 @@ public class PC03PrincipalControllerIT extends ApplicationTest {
      * Test of initial state of login view before open PrincipalView.
      */
     @Test
-    public void test1_initIteraction() {
+    public void test3_initIteraction() {
         clickOn("#tfUsuario");
-        write("jul");
+        write("julen");
         clickOn("#pfContraseña");
         write("12345678");
         clickOn("#btnInicio");
@@ -48,23 +49,28 @@ public class PC03PrincipalControllerIT extends ApplicationTest {
     }
 
     /**
-     * Test Method to the Log Out menu item
+     * Test Method to the Log Out menu item with close selection
      */
-    @Test
+    @Test @Ignore
     public void test2_logOut() {
 
         clickOn("#menu");
         clickOn("#btnLogOut");
+        clickOn("#cancelButton");
+        verifyThat("#principalPane", isVisible());
+        clickOn("#menu");
+        clickOn("#btnLogOut");
+        clickOn("#okButton");
         verifyThat("#loginPane", isVisible());
     }
 
     /**
      * Test of initial state of PrincipalView.
      */
-    @Test
+    @Test @Ignore
     public void test3_initState() {
         clickOn("#tfUsuario");
-        write("a");
+        write("ander");
         clickOn("#pfContraseña");
         write("12345678");
         clickOn("#btnInicio");
@@ -79,11 +85,52 @@ public class PC03PrincipalControllerIT extends ApplicationTest {
     /**
      * Test that verify labels
      */
-    @Test
+    @Test @Ignore
     public void test4_label() {
-        verifyThat("#lblLogin", hasText("Login: a"));
-        verifyThat("#lblFullName", hasText("Nombre Completo: ander oli"));
-        verifyThat("#lblEmail", hasText("Email: ander@hotm.com"));
+        verifyThat("#lblLogin", hasText("Login: ander"));
+        verifyThat("#lblFullName", hasText("Nombre Completo: ander olivas"));
+        verifyThat("#lblEmail", hasText("Email: anderolivas@gmail.com"));
     }
-
+    
+   /**
+     * Test to bottom_right Button for close session
+     */
+    @Test @Ignore
+    public void test5_btnLogOut2() {
+        clickOn("#btnLogOut2");
+        clickOn("#cancelButton");
+        verifyThat("#principalPane", isVisible());
+        clickOn("#btnLogOut2");
+        clickOn("#okButton");
+        verifyThat("#loginPane", isVisible());
+    }
+    
+    /**
+     *  Test to try the login exist
+     */
+    @Test 
+    public void test1_errorLogin() {
+        clickOn("#tfUsuario");
+        write("and");
+        clickOn("#pfContraseña");
+        write("12345678");
+        clickOn("#btnInicio");
+        verifyThat("#lblError", hasText("Usuario o contraseña incorrecta"));
+    }
+    
+   /**
+     *  Test to improve the password is correct
+     */
+    @Test
+    public void test2_errorPassword() {
+        clickOn("#tfUsuario");
+        write("julen");
+        clickOn("#pfContraseña");
+        write("1234567");
+        clickOn("#btnInicio");
+        verifyThat("#lblError", hasText("Usuario o contraseña incorrecta"));
+    }
+    
+    
+    
 }

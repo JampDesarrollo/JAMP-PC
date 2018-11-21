@@ -185,7 +185,7 @@ public class PC02RegistroController {
     /**
      * Initializes the window when shown.
      *
-     * @param event
+     * @param event WindowEvent
      */
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beggining PC02RegistroController::handleWindowShowing");
@@ -214,6 +214,7 @@ public class PC02RegistroController {
 
     /**
      * Close current view and open Login view method.
+     * @param ev ActionEvent
      */
     private void back(ActionEvent ev) {
         LOGGER.info("ventana de registro back");
@@ -222,6 +223,7 @@ public class PC02RegistroController {
 
     /**
      * Method that sets visible or not visible password fields.
+     * @param ev Action Event
      */
     private void showPassword(ActionEvent ev) {
         LOGGER.info("ventana de registro showpassword");
@@ -251,6 +253,7 @@ public class PC02RegistroController {
      * length are correct, if passwordlength is not less than 8 characters, if
      * the email pattern is correct andif password and repetition match. Then
      * Signs Up a new User.
+     * @param ev  ActionEvent
      */
     private void signUp(ActionEvent ev) {
         LOGGER.info("ventana de registro signup");
@@ -467,7 +470,7 @@ public class PC02RegistroController {
     /**
      * Method that checks if the email follows a pattern
      *
-     * @return
+     * @return boolean email is ok
      */
     private boolean chkEmailPattern() {
         boolean emailOk = true;
@@ -491,7 +494,7 @@ public class PC02RegistroController {
     /**
      * Method that checks passwords length
      *
-     * @return
+     * @return the password length
      */
     private boolean chkPasswLength() {
         boolean passwLen = true;

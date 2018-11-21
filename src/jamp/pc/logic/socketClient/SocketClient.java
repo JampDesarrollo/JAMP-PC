@@ -110,7 +110,7 @@ public class SocketClient {
      * Method for signing up a user
      *
      * @param user The user tipped in
-     * @throws jamp.pc.logic.UserLoginExistException
+     * @throws jamp.pc.logic.UserLoginExistException Exception
      */
     public void signUp(UserBean user) throws UserLoginExistException, Exception {
 

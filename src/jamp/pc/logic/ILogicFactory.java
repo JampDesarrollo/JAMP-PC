@@ -18,7 +18,7 @@ public class ILogicFactory {
      * Metodo que va a devolver un nuevo objeto que implementa la interfaz.
      * Method that returns the new object of the implementation
      *
-     * @return
+     * @return getIlogic
      */
     public static ILogic getILogic() {
 
