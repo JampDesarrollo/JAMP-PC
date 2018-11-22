@@ -8,13 +8,21 @@ package jamp.pc.ui.controller;
 import jamp.pc.logic.ILogic;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -32,6 +40,13 @@ public class PC03PrincipalController {
      */
     @FXML
     private MenuItem btnLogOut;
+    
+    /**
+     * Log out menu item
+     */
+    @FXML
+    private Button btnLogOut2;
+ 
     /**
      * Last access date label
      */
@@ -40,11 +55,13 @@ public class PC03PrincipalController {
     /**
      * Users Login label
      */
+    
     @FXML
     private Label lblLogin;
     /**
      * Users Full name label
      */
+    
     @FXML
     private Label lblFullName;
 
@@ -53,6 +70,17 @@ public class PC03PrincipalController {
      */
     @FXML
     private Label lblEmail;
+    
+    /**
+     * Menu 
+     */
+    @FXML
+    private Menu menu;
+    
+    /**
+     * To close app or session
+     */
+    private int cerrar;
 
     /**
      * The business logic object containing all business methods.
@@ -60,14 +88,10 @@ public class PC03PrincipalController {
     private ILogic ilogic;
 
     /**
-     * UserBean objet
+     * UserBean object
      */
     private UserBean user;
 
-    /**
-     * Maximum text fields length.
-     */
-    private final int MAX_LENGTH = 255;
     /**
      * Logger object used to log messages for application.
      */
@@ -79,8 +103,6 @@ public class PC03PrincipalController {
      * that this makes Application, Controller and Stage being tightly coupled.
      */
     protected Stage stage;
-
-    private WindowEvent event;
 
     /**
      * Gets the Stage object related to this controller.
@@ -103,7 +125,7 @@ public class PC03PrincipalController {
     /**
      * Set logic for this view controller
      *
-     * @param ILogic
+     * @param ILogic ilogic
      */
     public void setILogic(ILogic ILogic) {
         this.ilogic = ILogic;
@@ -112,7 +134,7 @@ public class PC03PrincipalController {
     /**
      * Set the user received in Login view for this view.
      *
-     * @param user
+     * @param user Userbean user
      */
     public void setUser(UserBean user) {
         this.user = user;
@@ -122,8 +144,8 @@ public class PC03PrincipalController {
     /**
      * Initializes the controller class.
      *
-     * @param root
-     * @throws java.io.IOException
+     * @param root root
+     * @throws java.io.IOException InputOuput exception
      */
     public void initStage(Parent root) throws IOException {
         LOGGER.info("Initializing Principal stage.");
@@ -133,41 +155,88 @@ public class PC03PrincipalController {
         stage.initModality(Modality.APPLICATION_MODAL);
         //Associate scene to primaryStage(Window)
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         //Set window properties
         stage.setTitle("Principal");
         //Set window's events handlers
         stage.setOnShowing(this::windowShow);
+        
         btnLogOut.setOnAction(this::logOutAction);
+        btnLogOut2.setOnAction(this::logOutAction);
         //Show primary window
         stage.show();
+        
+        stage.setOnCloseRequest((WindowEvent e) -> {
+            cerrar = 1;
+            e.consume();
+            cerrarSesionAlert(cerrar);
+
+        });
     }
 
     /**
      * Initializes the window when shown.
      *
-     * @param event
+     * @param event WindowEvent event
      */
     private void windowShow(WindowEvent event) {
         LOGGER.info("Beginning Principal::windowShow");
+        
         String date = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(user.getLastAccess());
+        
         lblDate.setText("Último acceso: " + date);
         lblEmail.setText("Email: " + user.getEmail());
         lblFullName.setText("Nombre Completo: " + user.getFullname());
         lblLogin.setText("Login: " + user.getLogin());
+        
+        menu.setMnemonicParsing(true);
+        menu.setText("_Menu");
+        
         btnLogOut.setMnemonicParsing(true);
         btnLogOut.setText("_Cerrar Sesion");
+        btnLogOut.setAccelerator(
+                new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
+
+        btnLogOut2.setMnemonicParsing(true);
+        btnLogOut2.setText("_Cerrar Sesion");
     }
 
     /**
      * Close current view and open Login view method.
      *
-     * @param event
+     * @param event Action Event
      */
     public void logOutAction(ActionEvent event) {
         LOGGER.info("Beginning Principal::logout action");
-        //Cerramos la ventana actual
-        stage.hide();
+        cerrar = 2;
+        cerrarSesionAlert(cerrar);
+    }
+    
+        /**
+     * Method that show a confirm dialog to close session
+     * @param cerrar Difference for close app or close session
+     */
+    public void cerrarSesionAlert(int cerrar){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Dialogo de confirmacion");
+        alert.setContentText("Estas seguro que deseas cerrar la sesion");
+        alert.setHeaderText("Cerrar Sesion");
+        
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setId("okButton");
+        
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+        cancelButton.setId("cancelButton");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            if(cerrar == 1){
+                System.exit(0);
+            }else{
+                stage.hide();
+            }
+  
+        }
     }
 
 }
