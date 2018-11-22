@@ -6,6 +6,7 @@
 package jamp.pc.ui.controller;
 
 import jamp.pc.UiApplication;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -75,13 +76,19 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#imgLoading", isInvisible());
     }
 
-    /*@Test
+    /**
+     * Test if tooltip is visible when mouse over passwordfield
+     */
+    @Test
     public void test2_toolTipVisible() {
         //Test si los campos estan  como deberian al inizializarse moveTo
-        ("#pfPassw");
+        moveTo("#pfPassw");
         sleep(1000);
-        verifyThat("#tip", isVisible());
-    }*/
+        verifyThat("Utiliza 8 caracteres como mínimo con una "
+                + "combinación de letras, números y símbolos", isVisible());
+        //lookup("#tip");
+    }
+
     /**
      * Eye button sets visible and invisible passwordfields and textfields.
      */
@@ -93,7 +100,8 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#pfRpassw", isVisible());
         verifyThat("#tfRpassw", isInvisible());
 
-        clickOn("#btnEye");
+        moveTo("#btnEye");
+        press(MouseButton.PRIMARY);
 
         verifyThat("#pfPassw", isInvisible());
         verifyThat("#tfPassw", isVisible());
@@ -101,7 +109,7 @@ public class PC02RegistroControllerIT extends ApplicationTest {
         verifyThat("#pfRpassw", isInvisible());
         verifyThat("#tfRpassw", isVisible());
 
-        clickOn("#btnEye");
+        release(MouseButton.PRIMARY);
 
     }
 
@@ -112,12 +120,11 @@ public class PC02RegistroControllerIT extends ApplicationTest {
     @Test
     public void test4_allFieldsFilled() {
         clickOn("#btnSignUp");
-        verifyThat("#lblLoginW", isVisible());
         verifyThat("#lblFNameW", isVisible());
         verifyThat("#lblEmailW", isVisible());
         verifyThat("#lblPasswW", isVisible());
 
-        clickOn("#tfLogin");
+        doubleClickOn("#tfLogin");
         write("userLogin");
         clickOn("#btnSignUp");
         verifyThat("#lblLoginW", isInvisible());
@@ -215,7 +222,7 @@ public class PC02RegistroControllerIT extends ApplicationTest {
     public void test8_userLoginExists() {
 
         doubleClickOn("#tfLogin");
-        write("a");
+        write("ander");
         doubleClickOn("#tfEmail");
         write("asq@hotm.com");
         clickOn("#btnSignUp");
@@ -226,7 +233,7 @@ public class PC02RegistroControllerIT extends ApplicationTest {
 
     /**
      * Checks if it's possible to sign up a new user and takes you to the next
-     * view.
+     * view.If theres no connection to the server a message will be shown
      */
     @Test
     public void test9_signUp() {
@@ -243,12 +250,12 @@ public class PC02RegistroControllerIT extends ApplicationTest {
     /**
      * Test Button back takes you back to previous view.
      */
-    /*@Test
+    @Test
     public void testu_backButton() {
 
         clickOn("#hpLink");
         sleep(1000);
         clickOn("#btnBack");
         verifyThat("#loginPane", isVisible());
-    }*/
+    }
 }

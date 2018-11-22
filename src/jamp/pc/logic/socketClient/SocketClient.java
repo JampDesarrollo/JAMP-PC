@@ -83,10 +83,10 @@ public class SocketClient {
             }
 
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error: ", e);
+            LOGGER.log(Level.SEVERE, "Error: ", e.getCause());
             throw new Exception();
         } catch (ClassNotFoundException ex) {
-            LOGGER.log(Level.SEVERE, "Clase no encontrada", ex);
+            LOGGER.log(Level.SEVERE, "Clase no encontrada", ex.getCause());
         } finally {
             try {
                 if (client != null) {
@@ -99,7 +99,7 @@ public class SocketClient {
                     output.close();
                 }
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Error cerrando socket: ", e);
+                LOGGER.log(Level.SEVERE, "Error cerrando socket: ", e.getCause());
             }
         }
 
@@ -110,7 +110,8 @@ public class SocketClient {
      * Method for signing up a user
      *
      * @param user The user tipped in
-     * @throws jamp.pc.logic.UserLoginExistException Exception
+     * @throws jamp.pc.logic.UserLoginExistException User login Already Exists
+     * @throws Exception Something happened
      */
     public void signUp(UserBean user) throws UserLoginExistException, Exception {
 
@@ -134,15 +135,15 @@ public class SocketClient {
             switch (mess) {
                 //aqui habia un case 2:
                 case 11:
-                    throw new UserLoginExistException();
+                    throw new UserLoginExistException("UserLoginExistException");
                 case -1:
                     throw new Exception();
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error: ", e);
+            LOGGER.log(Level.SEVERE, "Error: ", e.getCause());
             throw new Exception();
         } catch (ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Clase no encontrada", e);
+            LOGGER.log(Level.SEVERE, "Clase no encontrada", e.getCause());
             try {
                 if (client != null) {
                     client.close();
@@ -154,7 +155,7 @@ public class SocketClient {
                     output.close();
                 }
             } catch (IOException e2) {
-                LOGGER.log(Level.SEVERE, "Error cerrando socket", e2);
+                LOGGER.log(Level.SEVERE, "Error cerrando socket", e2.getCause());
             }
         }
     }

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -172,13 +174,15 @@ public class PC02RegistroController {
             stage.setResizable(false);
             stage.setOnShowing(this::handleWindowShowing);
             btnBack.setOnAction(this::back);
-            btnEye.setOnAction(this::showPassword);
+            btnEye.setOnMousePressed(this::showPassword);
+            btnEye.setOnMouseReleased(this::hidePassword);
             btnSignUp.setOnAction(this::signUp);
+            tfLogin.focusedProperty().addListener(this::loginNotFocused);
             stage.show();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
-                    e);
+                    e.getCause());
         }
     }
 
@@ -193,7 +197,12 @@ public class PC02RegistroController {
         btnBack.setDisable(false);
         btnEye.setDisable(false);
         btnSignUp.setDisable(false);
-        btnSignUp.requestFocus();
+        tfLogin.requestFocus();
+        tfLogin.selectAll();
+        tfLogin.setTooltip(new Tooltip("Login"));
+        tfEmail.setTooltip(new Tooltip("E-mail"));
+        tfFullName.setTooltip(new Tooltip("Nombre y Apellidos"));
+        pfRpassw.setTooltip(new Tooltip("Repita Contraseña"));
         lblLoginW.setVisible(false);
         lblFNameW.setVisible(false);
         lblEmailW.setVisible(false);
@@ -213,6 +222,19 @@ public class PC02RegistroController {
     }
 
     /**
+     * Deletes Login info when not focused
+     *
+     * @param ev event
+     */
+    private void loginNotFocused(ObservableValue observable, Boolean oldV, Boolean newV) {
+        if (tfLogin.getText().equals("Login")) {
+            if (!newV) {
+                tfLogin.setText("");
+            }
+        }
+    }
+
+    /**
      * Close current view and open Login view method.
      * @param ev ActionEvent
      */
@@ -222,30 +244,39 @@ public class PC02RegistroController {
     }
 
     /**
-     * Method that sets visible or not visible password fields.
-     * @param ev Action Event
+     * Method that sets visible password fields.
+     *
+     * @param ev Mouse event
      */
-    private void showPassword(ActionEvent ev) {
+    private void showPassword(MouseEvent ev) {
         LOGGER.info("ventana de registro showpassword");
-        if (pfPassw.isVisible()) {
-            //Change Passw textfield to visible
-            tfPassw.setText(pfPassw.getText());
-            pfPassw.setVisible(false);
-            tfPassw.setVisible(true);
-            //Change Rpassw textfield to visible
-            tfRpassw.setText(pfRpassw.getText());
-            pfRpassw.setVisible(false);
-            tfRpassw.setVisible(true);
-        } else {
-            //Change Passw passwordfield to visible
-            pfPassw.setText(tfPassw.getText());
-            tfPassw.setVisible(false);
-            pfPassw.setVisible(true);
-            //Change Rpassw passwordfield to visible
-            pfRpassw.setText(tfRpassw.getText());
-            tfRpassw.setVisible(false);
-            pfRpassw.setVisible(true);
-        }
+
+        //Change Passw textfield to visible
+        tfPassw.setText(pfPassw.getText());
+        pfPassw.setVisible(false);
+        tfPassw.setVisible(true);
+        //Change Rpassw textfield to visible
+        tfRpassw.setText(pfRpassw.getText());
+        pfRpassw.setVisible(false);
+        tfRpassw.setVisible(true);
+
+    }
+
+    /**
+     * Method that sets not visible password fields.
+     *
+     * @param ev event mouseaction
+     */
+    private void hidePassword(MouseEvent ev) {
+        LOGGER.info("ventana de registro hidepassword");
+        //Change Passw passwordfield to visible
+        pfPassw.setText(tfPassw.getText());
+        tfPassw.setVisible(false);
+        pfPassw.setVisible(true);
+        //Change Rpassw passwordfield to visible
+        pfRpassw.setText(tfRpassw.getText());
+        tfRpassw.setVisible(false);
+        pfRpassw.setVisible(true);
     }
 
     /**
@@ -262,6 +293,7 @@ public class PC02RegistroController {
         boolean emailCorrect = chkEmailPattern();
         boolean passwLen = chkPasswLength();
         boolean passwMatch = chkPasswMatch();
+        focusFirstWrong();
 
         try {
             if (filled && fieldsLength && emailCorrect && passwMatch && passwLen) {
@@ -298,22 +330,25 @@ public class PC02RegistroController {
             lblLoginW.setStyle("-fx-text-inner-color: red;");
             lblLoginW.setVisible(true);
             tfLogin.setStyle("-fx-border-color:red;");
-            tfLogin.setText("");
-            LOGGER.log(Level.SEVERE, "{0} El login de usuario ya existe. \n ",
-                    e);
+            tfLogin.requestFocus();
+            tfLogin.selectAll();
+            LOGGER.log(Level.SEVERE, " El login de usuario ya existe. {0}",
+                    e.getMessage());
             imgLoading.setVisible(false);
         } catch (IOException e) {
-            lblRpasswW.setText("Ha habido un error con la conexion");
-            lblRpasswW.setStyle("-fx-text-inner-color: red;");
-            lblRpasswW.setVisible(true);
-            LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
-                    e);
-            imgLoading.setVisible(false);
-        } catch (Exception e) {
             lblRpasswW.setText("Ha habido un error");
             lblRpasswW.setStyle("-fx-text-inner-color: red;");
             lblRpasswW.setVisible(true);
-            LOGGER.log(Level.SEVERE, "{0} Exception \n ", e);
+            LOGGER.log(Level.SEVERE, "{0} No se ha podido abrir la ventana. \n ",
+                    e.getCause());
+            imgLoading.setVisible(false);
+        } catch (Exception e) {
+            lblRpasswW.setText("Ha habido un error con la conexión, "
+                    + "inténtelo más tarde.");
+            lblRpasswW.setStyle("-fx-text-inner-color: red;");
+            lblRpasswW.setVisible(true);
+            LOGGER.log(Level.SEVERE, " Exception: Ha habido un error en el "
+                    + "lado servidor {0}", e.getMessage());
             imgLoading.setVisible(false);
         }
 
@@ -494,7 +529,7 @@ public class PC02RegistroController {
     /**
      * Method that checks passwords length
      *
-     * @return the password length
+     * @return boolean password length ok
      */
     private boolean chkPasswLength() {
         boolean passwLen = true;
@@ -534,6 +569,31 @@ public class PC02RegistroController {
             lblRpasswW.setVisible(false);
         }
         return passwMatch;
+    }
+
+    private void focusFirstWrong() {
+        boolean wrong = false;
+        if (lblLoginW.isVisible()) {
+            wrong = true;
+            tfLogin.requestFocus();
+            tfLogin.selectAll();
+        } else if (lblFNameW.isVisible() && wrong == false) {
+            wrong = true;
+            tfFullName.requestFocus();
+            tfFullName.selectAll();
+        } else if (lblEmailW.isVisible() && wrong == false) {
+            wrong = true;
+            tfEmail.requestFocus();
+            tfEmail.selectAll();
+        } else if (lblPasswW.isVisible() && wrong == false) {
+            wrong = true;
+            pfPassw.requestFocus();
+            pfPassw.selectAll();
+        } else if (lblRpasswW.isVisible() && wrong == false) {
+            pfRpassw.requestFocus();
+            pfRpassw.selectAll();
+        }
+
     }
 
 }
