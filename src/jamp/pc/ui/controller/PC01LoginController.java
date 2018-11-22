@@ -22,6 +22,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -103,20 +104,28 @@ public class PC01LoginController {
     private Hyperlink hpLink;
 
     /**
-     * Textfield de la contraseña textfield for the password
+     * textfield for the password
      */
     @FXML
     private TextField tfContraseña;
 
     /**
-     * Gif de espera. gif for the wait.
+     *Gif for the wait.
      */
     @FXML
     private ImageView imLoading;
+   
+    /**
+     * Tooltip for tfUsuario
+     */
+    private Tooltip tooltip = new Tooltip();
+    
+    /**
+     * Tooltip for pfContraseña
+     */
+    private Tooltip tooltipContra = new Tooltip();
 
     /**
-     *
-     *
      * Sets the Stage object related to this controller.
      *
      * @param stage it receives the stage.
@@ -127,24 +136,20 @@ public class PC01LoginController {
     }
 
     /**
-     *
-     *
+
      * Method that receives the ilogic param of the class application.
      *
      * @param ILogic it receives the logic object that came from the application
      * class
-     *
-     *
      */
     public void setILogic(ILogic ILogic) {
         this.ilogic = ILogic;
     }
 
     /**
-     *
      * Method that initializes the "Login" window. It receives the param root,
      * where is the fxml file.
-     *
+     * 
      * @param root receives the root parameter
      */
     public void initStage(Parent root) {  //recibo el root, AHÍ tengo el archivo XML
@@ -162,15 +167,14 @@ public class PC01LoginController {
         hpLink.setOnAction(this::register);
         btnInicio.setOnAction(this::logIn);
         btnOjo.setOnAction(this::showPassword);
-
-        //muestro la ventana
+       //muestro la ventana
         stage.show();
     }
 
     /**
      * Method that initializes the state of the components of the window.
      *
-     * @param event event to handleWindowShowing
+     * @param event parameter to do an action
      */
     public void handleWindowShowing(WindowEvent event) {
         LOGGER.info("ventana de inicio sesion handleWindowShowing");
@@ -178,17 +182,21 @@ public class PC01LoginController {
         btnInicio.setDisable(false);
         btnOjo.setDisable(false);
         hpLink.setDisable(false);
-        btnInicio.requestFocus();
+        tfUsuario.requestFocus();
+        tfUsuario.selectAll();
         imLoading.setVisible(false);
         tfContraseña.setVisible(false);
         //el label de informacion estará invisible
         lblError.setVisible(false);
-
+        tooltip.setText("Escriba el nombre del usuario");
+        tfUsuario.setTooltip(tooltip);
+        tooltipContra.setText("Escriba la contraseña, tiene que tener mínimo 8 carácteres");
+        pfContraseña.setTooltip (tooltipContra);
     }
 
     /**
      * Method to go to the register window.
-     * @param ev Action Event
+     * @param ev parameter to do an action
      */
     public void register(ActionEvent ev) {
         LOGGER.info("clickOn Hyperlink");
@@ -207,13 +215,16 @@ public class PC01LoginController {
             controller.setStage(stage);
             //inizializo el stage
             controller.initStage(root);
-            tfUsuario.setText("");
+            //que aparezca como al principio
+            tfUsuario.setText("Nombre de usuario");           
+            tfUsuario.requestFocus();
+            tfUsuario.selectAll();            
             pfContraseña.setText("");
             tfUsuario.setStyle("-fx-border-color: -fx-box-border;");
             pfContraseña.setStyle("-fx-border-color: -fx-box-border;");
             lblError.setVisible(false);
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error accediendo a la ventana {0}", ex);
+            LOGGER.log(Level.SEVERE, "Error accediendo a la ventana {0}", ex.getCause());
         }
     }
 
@@ -221,7 +232,7 @@ public class PC01LoginController {
      * It serves to be able to make all the necessary checks to be able to
      * initiate session.
      *
-     * @param ev ActionEvent
+     * @param ev parameter to do an action
      */
     public void logIn(ActionEvent ev) {
         LOGGER.info("ventana de login  inicio sesion");
@@ -249,7 +260,6 @@ public class PC01LoginController {
                 if (userReturn != null) { // si lo que devuelve es un usuario diferente a null 
                     try {
                         //si esta todo correcto que vaya a la ventana principal
-
                         //instancio el xml
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamp/pc/ui/view/PC03Principal.fxml"));
                         //lo cargo en el root que es de tipo parent
@@ -265,18 +275,21 @@ public class PC01LoginController {
                         //le paso el usuario entero a la ventana 
                         controller.setUser(userReturn);
                         controller.initStage(root);
-                        tfUsuario.setText("");
+                        //que aparezca como al principio
+                        tfUsuario.setText("Nombre de usuario");           
+                        tfUsuario.requestFocus();
+                        tfUsuario.selectAll(); 
                         pfContraseña.setText("");
                         imLoading.setVisible(false);
                         //stage.hide();
 
                     } catch (Exception ex) {
                         //mensaje de "no se ha podido cargar la ventana"
-                        LOGGER.log(Level.SEVERE, "Error accediendo a la ventana {0}", ex);
+                        LOGGER.log(Level.SEVERE, "Error accediendo a la ventana {0}", ex.getCause());
                         lblError.setText("Error al conectar con la base de datos");
-            lblError.setStyle("-fx-text-inner-color: red;");
-            lblError.setVisible(true);
-            imLoading.setVisible(false);
+                        lblError.setStyle("-fx-text-inner-color: red;");
+                        lblError.setVisible(true);
+                        imLoading.setVisible(false);
                     }
                 }
             } else { //si los caracteres son mayores a los definidos
@@ -287,6 +300,11 @@ public class PC01LoginController {
                     lblError.setText("Demasiados caracteres");
                     lblError.setStyle("-fx-text-inner-color: red;");
                     lblError.setVisible(true);
+                    //enfoco los dos campos
+                    tfUsuario.requestFocus();
+                    tfUsuario.selectAll();
+                    pfContraseña.requestFocus();
+                    pfContraseña.selectAll(); 
 
                 } else if (tfUsuario.getText().trim().length() > MAX_CARACT) {
                     btnInicio.requestFocus();
@@ -295,16 +313,30 @@ public class PC01LoginController {
                     lblError.setText("Demasiados caracteres");
                     lblError.setStyle("-fx-text-inner-color: red;");
                     lblError.setVisible(true);
-
-                } else {
+                    //enfoco el campo del usuario
+                    tfUsuario.requestFocus();
+                    tfUsuario.selectAll(); 
+                }else if(pfContraseña.getText().trim().length()>255){  //si la contraseña esta mal por que se pasa de los 255 caracteres
                     btnInicio.requestFocus();
                     tfUsuario.setStyle("-fx-border-color: -fx-box-border;");
                     pfContraseña.setStyle("-fx-border-color: red;");
                     lblError.setText("Demasiados caracteres");
                     lblError.setStyle("-fx-text-inner-color: red;");
                     lblError.setVisible(true);
-
-                }
+                    //enfoco el campo de la contraseña
+                    pfContraseña.requestFocus();
+                    pfContraseña.selectAll(); 
+                }else if (pfContraseña.getText().trim().length()<8){//si la contraseña esta mal por que no llega a los 8 caracteres
+                    btnInicio.requestFocus();
+                    tfUsuario.setStyle("-fx-border-color: -fx-box-border;");
+                    pfContraseña.setStyle("-fx-border-color: red;");
+                    lblError.setText("La contraseña tiene que tener mínimo 8 carácteres");
+                    lblError.setStyle("-fx-text-inner-color: red;");
+                    lblError.setVisible(true);
+                    //enfoco el campo de la contraseña
+                    pfContraseña.requestFocus();
+                    pfContraseña.selectAll(); 
+              }
             }
         } else { //si algun campo o los dos estan vacios
             //se va a enfocar los campos y se le va a cambiar el texto del label
@@ -352,7 +384,7 @@ public class PC01LoginController {
      */
     private boolean chkAllFieldsFilled() {
         boolean isFilled = false;
-        if (!this.tfUsuario.getText().trim().equals("") && !this.pfContraseña.getText().trim().equals("")) {
+        if (!this.tfUsuario.getText().trim().equals("") && !this.pfContraseña.getText().trim().equals("") ) {
             //si son diferentes a vacio, devuelve true, eso quiere decir que hay algo escrito
             isFilled = true;
         }
@@ -373,30 +405,34 @@ public class PC01LoginController {
             UserBean usuario = new UserBean(tfUsuario.getText(), pfContraseña.getText());
             returnUser = ilogic.userLogin(usuario); // el userlogin me va a devolver el usuario entero 
         } catch (UserNotExistException e) {
-            LOGGER.log(Level.SEVERE, "User not exist exception {0}", e);
+            LOGGER.log(Level.SEVERE, "User not exist exception {0}", e.getCause());
             //se pone el foco en el usuario
             btnInicio.requestFocus();
             //que este en rojo
             tfUsuario.setStyle("-fx-border-color: red;");
-            pfContraseña.setStyle("-fx-border-color: red;");
             //que el texto sea visible 
-            lblError.setText("Usuario o contraseña incorrecta");
+            lblError.setText("Usuario incorrecto");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
             imLoading.setVisible(false);
+            //se va a enfocar el campo del usuario
+            tfUsuario.requestFocus();
+            tfUsuario.selectAll(); 
         } catch (PasswordNotOkException e) {
-            LOGGER.log(Level.SEVERE, "Password not ok exception {0}", e);
+            LOGGER.log(Level.SEVERE, "Password not ok exception {0}", e.getCause());
             //se pone el foco en el campos de la contraseña y usuario 
             btnInicio.requestFocus();
-            tfUsuario.setStyle("-fx-border-color: red;");
             pfContraseña.setStyle("-fx-border-color: red;");
             //que el texto sea visible 
-            lblError.setText("Usuario o contraseña incorrecta");
+            lblError.setText("Contraseña incorrecta");
             lblError.setVisible(true);
             lblError.setStyle("-fx-text-inner-color: red;");
             imLoading.setVisible(false);
+            //se va a enfocar el campo de la contraseña
+            pfContraseña.requestFocus();
+            pfContraseña.selectAll(); 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error {0}", e);
+            LOGGER.log(Level.SEVERE, "Error {0}", e.getCause());
             lblError.setText("Error al conectar con la base de datos");
             lblError.setStyle("-fx-text-inner-color: red;");
             lblError.setVisible(true);
@@ -404,10 +440,9 @@ public class PC01LoginController {
         }
         return returnUser;
     }
-
     /**
      * Method to be able to see the password or not.
-     * @param ev Action event 
+     * @param ev parameter to do an action
      */
     private void showPassword(ActionEvent ev) {
         LOGGER.info("ClickOn button Eye");
@@ -427,12 +462,14 @@ public class PC01LoginController {
 
     /**
      * Method to control the characters you enter in the textfield and
-     * passwordfield. It returns a boolean.
-     * @return maxcaracteres
+     * passwordfield. 
+     * @return It returns a boolean indicating if the characters are more
+     * or less than maximum/minimum characters defined
      */
     private boolean maxCharacters() {
         boolean maxcaracteres = false;
-        if (tfUsuario.getText().trim().length() < MAX_CARACT && pfContraseña.getText().trim().length() < MAX_CARACT) {
+        //La contraseña tiene que estar entre 255 caracteres y 8 
+        if (tfUsuario.getText().trim().length() < MAX_CARACT && pfContraseña.getText().trim().length() < MAX_CARACT && pfContraseña.getText().trim().length()>=8) {
             maxcaracteres = true;
         }
         return maxcaracteres;

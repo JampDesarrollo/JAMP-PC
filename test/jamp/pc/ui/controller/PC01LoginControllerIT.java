@@ -18,8 +18,7 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
- * Clase de test para el controlador de Login Test class for the Login
- * controller
+ * Test class for the Login controller
  *
  * @author Paula
  */
@@ -35,44 +34,64 @@ public class PC01LoginControllerIT extends ApplicationTest {
 
     //3. Empezar a escribir nuestros metodos
     /**
-     * Mostrar la ventana en el modo inicial. Initializing handle WindowShowing
-     * of Login
+     * Initializing handle WindowShowing of Login
      */
-    @Test
+  
     public void test1_initialStage() {
 
         //como tiene que aparecer en el inicio
         verifyThat("#btnInicio", isEnabled());
         verifyThat("#btnOjo", isEnabled());
         verifyThat("#hpLink", isEnabled());
-        verifyThat("#tfUsuario", hasText(""));
+        verifyThat("#tfUsuario", hasText("Nombre de usuario"));
         verifyThat("#pfContraseña", hasText(""));
         verifyThat("#tfContraseña", isInvisible());
         verifyThat("#imLoading", isInvisible());
         verifyThat("#lblError", isInvisible());
 
     }
-
+    
+    
     /**
-     * Comprobar que los campos estan vacios y al pulsar en en Iniciar Sesion da
-     * error Text User and Password field are empty and we have an error.
+     * Click on hyperlink and goes to the Register.
      */
     @Test
-    public void test2_comprobarCamposVaciosErrorVisible() {
+    public void test2_clickLinkIrVentanaRegistro() {
+
+        clickOn("#hpLink");
+        verifyThat("#signUpPane", isVisible());
+    }
+
+    /**
+     * In the register window we click on back button and we go back to
+     * the login window
+     */
+    @Test
+    public void test3_clickBtnBackIrVentanaLogin() {
+        clickOn("#btnBack");
+        verifyThat("#loginPane", isVisible());      
+    }
+
+    /**
+     * Check that Text field of the user and Password field are empty and we have an error.
+     */
+    @Test
+    public void test4_comprobarCamposVaciosErrorVisible() {
+        eraseText(20);
         clickOn("#btnInicio");
         verifyThat("#lblError", isVisible());
         verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Campo requerido"));
     }
 
     /**
-     * Comprobar que al meter el usuario y la contraseña no, da error. We have
-     * the login but the passsword field is empty, the error appears.
+     *  We have the login full but the passsword field is empty, the error
+     * "campo requerido" appears.
      */
     @Test
-    public void test3_comprobarCampoUsuarioLlenoErrorVisible() {
-
+    public void test5_comprobarCampoUsuarioLlenoErrorVisible() {
+        eraseText(20);
         clickOn("#tfUsuario");
-        write("login1");
+        write("pau");
         clickOn("#btnInicio");
         verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Campo requerido"));
         verifyThat("#lblError", isVisible());
@@ -80,30 +99,28 @@ public class PC01LoginControllerIT extends ApplicationTest {
     }
 
     /**
-     * Comprobar que al meter la contraseña y el usuario no, da error. We write
-     * the password and the user no, the error appears.
+     * We write the password and the user no, the error "Campo requerido" appears.
      */
     @Test
-    public void test4_comprobarCampoPasswordLlenoErrorVisible() {
+    public void test6_comprobarCampoPasswordLlenoErrorVisible() {
+        eraseText(20);
         clickOn("#pfContraseña");
-        write("pass1");
+        write("12345");
         clickOn("#btnInicio");
         verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Campo requerido"));
         verifyThat("#lblError", isVisible());
     }
 
     /**
-     * Escribirmos la contraseña en pfContraseña y al pulsar en el ojo la tiene
-     * que mostrar. Cuando volvamos a pulsar en el boton, la oculta. We write
-     * the password and the button eye show the password.Then we click on the
-     * button and e hide the password
+     * We write the password and the button eye show the password.Then we click on the
+     * button and we hide the password
      */
     @Test
-    public void test5_tfContraseñaIsVisibleOnClickBotonOjo() {
-
+    public void test7_tfContraseñaIsVisibleOnClickBotonOjo() {
+         eraseText(20);
         //interaccion
         clickOn("#pfContraseña");
-        write("pass1");
+        write("12345");
         clickOn("#btnOjo");
         //pregunto
         verifyThat("#pfContraseña", isInvisible());
@@ -113,60 +130,74 @@ public class PC01LoginControllerIT extends ApplicationTest {
         verifyThat("#pfContraseña", isVisible());
         verifyThat("#tfContraseña", isInvisible());
 
+    }  
+    
+    /**
+     * We don't have 8 characters in password, it appears the error 
+     * "La contraseña tiene que tener mínimo 8 carácteres"
+     */   
+    @Test
+    public void test8_MinCharactersOfPasswordWrong(){
+    
+     eraseText(20);
+     clickOn("#tfUsuario");
+     write("pau");
+     clickOn("#pfContraseña");
+     write("12345");
+     clickOn("#btnInicio");
+     verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("La contraseña tiene que tener mínimo 8 carácteres"));
+     verifyThat("#lblError", isVisible());
+    
     }
-
+    
     /**
-     * Ponemos el usuario mal y la contraseña bien. Tiene que salir el error de
-     * Usuario o contraseña incorrecta We write the password ok but the user no,
-     * it appears the error.
-     */
-    /*@Test
-    public void test6_LoginNotOkPasswordOkVisibleError() {
-
-        clickOn("tfUsuario");
-        write("ggggg");
-        clickOn("pfContraseña");
-        write("pass1");
-        clickOn("#btnInicio");
-        verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Usuario o contraseña incorrecta"));
-        verifyThat("#lblError", isVisible());
-    }*/
-    /**
-     * Escribimos el usuario y la contraseña y va a la ventana Prinicpal. We
-     * write the user and password ok, it goes to the Principal window.
+     * We write the password ok but the user no, it appears the error 
+     * "usuario o contraseña incorrecta".
+     * 
      */
     @Test
-    public void test7_clickLogInIrVentanaLogin() {
-
+    public void test9_LoginNotOkPasswordOkVisibleError() {
+        eraseText(20);
         clickOn("#tfUsuario");
-        write("login1");
+        write("pau");
         clickOn("#pfContraseña");
-        write("pass1");
+        write("12345678");
         clickOn("#btnInicio");
-
-        // verifyThat("#principalPane", isVisible());
+        verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Usuario incorrecto"));
+        verifyThat("#lblError", isVisible());
     }
-
     /**
-     * Pulsa en el link y va a la ventana de Registro. Click on hyperlink and
-     * goes to the Register.
+     * We write the wrong password but the login is OK. It appears the error. 
      */
-    @Test
-    public void test8_clickLinkIrVentanaRegistro() {
-
-        clickOn("#hpLink");
-        verifyThat("#signUpPane", isVisible());
+     @Test
+    public void testa_LoginOkPasswordNotOkVisibleError(){
+    
+        eraseText(20);
+        clickOn("#tfUsuario");
+        write("paula");
+        clickOn("#pfContraseña");
+        write("1234567895689545677");
+        clickOn("#btnInicio");
+        verifyThat("#lblError", org.testfx.matcher.control.LabeledMatchers.hasText("Contraseña incorrecta"));
+        verifyThat("#lblError", isVisible());
+             
     }
-
     /**
-     * En la ventana de Registro pulsamos en el boton back y vuelve a la ventana
-     * de Login In the register window we click on back button and we go back to
-     * the login window
+     * Everything is OK. Go to the principal window.
      */
-    @Test
-    public void test9_clickBtnBackIrVentanaLogin() {
-        clickOn("#btnBack");
-        verifyThat("#loginPane", isVisible());
+     @Test
+    public void testb_LoginOKPasswordOk(){
+         //login correcto y contraseña correcta
+        eraseText(20);
+        clickOn("#tfUsuario");
+        write("paula");
+        clickOn("#pfContraseña");
+        write("12345678");
+        clickOn("#btnInicio");
+        verifyThat("#principalPane", isVisible());    
+    
+        
     }
-
+    
+    
 }

@@ -9,19 +9,16 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 /**
- * Clase que va a lanzar la primera ventana de la aplicación, la ventana de
- * Login.
- *
+ * Class that is going to launch the first window of the application, the window of
+ * Login
+ * 
  * @author Paula
  */
 public class UiApplication extends Application {
 
     /**
-     * Metodo que sirve para cargar la primera ventana de la aplicacion
-     *
-     * @param stage recibe el parametro stage que es el escenario Method that
-     * throws the first stage and receives the stage.
-     * @throws Exception general exception
+     * Method that throws the first stage and receives the stage.
+     * @throws Exception throws Exception
      */
     @Override
     public void start(Stage stage) throws Exception {
@@ -42,9 +39,9 @@ public class UiApplication extends Application {
     }
 
     /**
-     * Metodo qque sirve para poder lanzar el metodo start de esta misma clase
+     * Method that serves to launch the start method of this same class
      *
-     * @param args Method that throws the method start of this class
+     * @param args data type that you send to the main method of the class
      */
     public static void main(String[] args) {
         //Lanza el metodo start

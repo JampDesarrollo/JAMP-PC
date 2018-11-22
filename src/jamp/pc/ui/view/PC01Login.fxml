@@ -14,14 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fx:id="loginPane" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.controller.PC01LoginController">
+<VBox fx:id="loginPane" alignment="CENTER" fillWidth="false" prefHeight="480.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jamp.pc.ui.controller.PC01LoginController">
    <children>
       <Label fx:id="lblJAMP" alignment="CENTER" text="JAMP" textFill="#005192">
          <font>
             <Font name="Alef Bold" size="36.0" />
          </font>
       </Label>
-      <TextField fx:id="tfUsuario" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Nombre de usuario">
+      <TextField fx:id="tfUsuario" alignment="CENTER" prefHeight="25.0" prefWidth="222.0" promptText="Nombre de usuario" text="Nombre de usuario">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -54,7 +54,7 @@
             </Button>
          </children>
       </HBox>
-      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="250.0" text="Usuario o contraseña incorrecta" textFill="RED">
+      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="316.0" text="Usuario o contraseña incorrecta" textFill="RED">
          <VBox.margin>
             <Insets />
          </VBox.margin>
