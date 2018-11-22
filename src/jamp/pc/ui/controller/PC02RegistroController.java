@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -174,10 +174,10 @@ public class PC02RegistroController {
             stage.setResizable(false);
             stage.setOnShowing(this::handleWindowShowing);
             btnBack.setOnAction(this::back);
-            //btnEye.setOnAction(this::showPassword);
             btnEye.setOnMousePressed(this::showPassword);
             btnEye.setOnMouseReleased(this::hidePassword);
             btnSignUp.setOnAction(this::signUp);
+            tfLogin.focusedProperty().addListener(this::loginNotFocused);
             stage.show();
 
         } catch (Exception e) {
@@ -222,7 +222,21 @@ public class PC02RegistroController {
     }
 
     /**
+     * Deletes Login info when not focused
+     *
+     * @param ev event
+     */
+    private void loginNotFocused(ObservableValue observable, Boolean oldV, Boolean newV) {
+        if (tfLogin.getText().equals("Login")) {
+            if (!newV) {
+                tfLogin.setText("");
+            }
+        }
+    }
+
+    /**
      * Close current view and open Login view method.
+     *
      * @param ev event action
      */
     private void back(ActionEvent ev) {
@@ -271,6 +285,7 @@ public class PC02RegistroController {
      * length are correct, if passwordlength is not less than 8 characters, if
      * the email pattern is correct andif password and repetition match. Then
      * Signs Up a new User.
+     *
      * @param ev event action
      */
     private void signUp(ActionEvent ev) {
