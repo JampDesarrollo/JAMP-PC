@@ -21,7 +21,7 @@ public class UiApplication extends Application {
      *
      * @param stage recibe el parametro stage que es el escenario Method that
      * throws the first stage and receives the stage.
-     * @throws Exception
+     * @throws Exception general exception
      */
     @Override
     public void start(Stage stage) throws Exception {

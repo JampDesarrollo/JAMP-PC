@@ -170,7 +170,7 @@ public class PC01LoginController {
     /**
      * Method that initializes the state of the components of the window.
      *
-     * @param event
+     * @param event event to handleWindowShowing
      */
     public void handleWindowShowing(WindowEvent event) {
         LOGGER.info("ventana de inicio sesion handleWindowShowing");
@@ -188,7 +188,7 @@ public class PC01LoginController {
 
     /**
      * Method to go to the register window.
-     * @param ev 
+     * @param ev Action Event
      */
     public void register(ActionEvent ev) {
         LOGGER.info("clickOn Hyperlink");
@@ -221,7 +221,7 @@ public class PC01LoginController {
      * It serves to be able to make all the necessary checks to be able to
      * initiate session.
      *
-     * @param ev
+     * @param ev ActionEvent
      */
     public void logIn(ActionEvent ev) {
         LOGGER.info("ventana de login  inicio sesion");
@@ -407,6 +407,7 @@ public class PC01LoginController {
 
     /**
      * Method to be able to see the password or not.
+     * @param ev Action event 
      */
     private void showPassword(ActionEvent ev) {
         LOGGER.info("ClickOn button Eye");
@@ -427,6 +428,7 @@ public class PC01LoginController {
     /**
      * Method to control the characters you enter in the textfield and
      * passwordfield. It returns a boolean.
+     * @return maxcaracteres
      */
     private boolean maxCharacters() {
         boolean maxcaracteres = false;
