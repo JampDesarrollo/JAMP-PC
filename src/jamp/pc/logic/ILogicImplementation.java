@@ -53,7 +53,6 @@ public class ILogicImplementation implements ILogic {
      * This method register a new UserBean in database
      *
      * @param user The UserBean object to be added
-     * @throws UserLoginExistException, Exception.
      */
     @Override
     public void userSignUp(UserBean user)
